@@ -2,3 +2,5 @@ numpy
 matplotlib
 streamlit
 opencv-python
+plotly
+pandas
