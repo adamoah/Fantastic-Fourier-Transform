@@ -1,0 +1,35 @@
+{
+    "active": 0,
+    "currentvalue": {"prefix": "Frequency: "},
+    "len": 0.9,
+    "pad": {"b": 10, "t": 60},
+    "steps": [{"args": [["0"], {"frame": {"duration": 0, "redraw": true}, "mode":
+                        "immediate", "fromcurrent": true, "transition":
+                        {"duration": 0, "easing": "linear"}}],
+               "label": "1",
+               "method": "animate"},
+              {"args": [["1"], {"frame": {"duration": 0, "redraw": true}, "mode":
+                        "immediate", "fromcurrent": true, "transition":
+                        {"duration": 0, "easing": "linear"}}],
+               "label": "5",
+               "method": "animate"},
+              {"args": [["2"], {"frame": {"duration": 0, "redraw": true}, "mode":
+                        "immediate", "fromcurrent": true, "transition":
+                        {"duration": 0, "easing": "linear"}}],
+               "label": "10",
+               "method": "animate"},
+              {"args": [["3"], {"frame": {"duration": 0, "redraw": true}, "mode":
+                        "immediate", "fromcurrent": true, "transition":
+                        {"duration": 0, "easing": "linear"}}],
+               "label": "15",
+               "method": "animate"},
+              {"args": [["4"], {"frame": {"duration": 0, "redraw": true}, "mode":
+                        "immediate", "fromcurrent": true, "transition":
+                        {"duration": 0, "easing": "linear"}}],
+               "label": "20",
+               "method": "animate"}],
+    "x": 0.1,
+    "xanchor": "left",
+    "y": 0,
+    "yanchor": "top"
+}

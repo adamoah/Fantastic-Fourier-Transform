@@ -13,15 +13,10 @@ def main():
     # value = st.slider("Brightness", 0, 10, value=1, step=1)
     fig = load()
     st.plotly_chart(fig)
-    value = st.slider("Frequency", 0, 10, value=0, step=1)
-    '''
-    image = create_freq_img(value)
-    fft_img = fft_freq_img(image).astype(np.uint8)
-    norm_fft = cv.applyColorMap(fft_img, cv.COLORMAP_VIRIDIS)
 
-    col1, _, col2 = st.columns(3)
-    '''
-    st.plotly_chart(create_freq_chart())
+    st.plotly_chart(create_freq_seq())
+    st.plotly_chart(create_orientation_seq())
+    st.plotly_chart(create_amplitude_seq())
 
 
 if __name__ == "__main__":
