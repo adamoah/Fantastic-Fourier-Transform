@@ -14,6 +14,10 @@ def main():
     fig = load()
     st.plotly_chart(fig)
 
+    st.plotly_chart(create_lena_fft())
+
+    st.plotly_chart(create_fft_showcase())
+
     st.plotly_chart(create_freq_seq())
     st.plotly_chart(create_orientation_seq())
     st.plotly_chart(create_amplitude_seq())
