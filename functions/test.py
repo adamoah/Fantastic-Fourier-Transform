@@ -175,7 +175,7 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     fig.layout.annotations[1]['text'] = "Frequency Domain"
 
     # Open and read the JSON file
-    with open("./Fantastic-Fourier-Transform/data/slider_jsons/freq.JSON", 'r') as file:
+    with open("./data/slider_jsons/freq.JSON", 'r') as file:
         sliders = json.load(file)
 
     fig.update_layout(sliders=[sliders], coloraxis_showscale=False) # update figure layout
@@ -186,7 +186,7 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
 
-    # pio.write_html(fig, file="./Fantastic-Fourier-Transform/data/frequency.html", auto_play=True)
+    # pio.write_html(fig, file="./data/frequency.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -214,7 +214,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     fig.layout.annotations[1]['text'] = "Frequency Domain"
     
     # Open and read the JSON file
-    with open("./Fantastic-Fourier-Transform/data/slider_jsons/angle.JSON", 'r') as file:
+    with open("./data/slider_jsons/angle.JSON", 'r') as file:
         sliders = json.load(file)
 
     fig.update_layout(sliders=[sliders], coloraxis_showscale=False) # update figure    
@@ -225,7 +225,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
 
-    # pio.write_html(fig, file="./Fantastic-Fourier-Transform/data/orientation.html", auto_play=True)
+    # pio.write_html(fig, file="./data/orientation.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -253,7 +253,7 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
     fig.layout.annotations[1]['text'] = "Frequency Domain"
 
     # Open and read the JSON file
-    with open("./Fantastic-Fourier-Transform/data/slider_jsons/mag.JSON", 'r') as file:
+    with open("./data/slider_jsons/mag.JSON", 'r') as file:
         sliders = json.load(file)
 
     fig.update_layout(sliders=[sliders], coloraxis_showscale=False) # update figure
@@ -264,7 +264,7 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
 
-    # pio.write_html(fig, file="./Fantastic-Fourier-Transform/data/amplitude.html", auto_play=True)
+    # pio.write_html(fig, file="./data/amplitude.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -274,7 +274,7 @@ def create_lena_fft():
     '''
     Creates a plotly figure containing the image and corresponding fft for Lena
     '''
-    img = cv2.imread("./Fantastic-Fourier-Transform/data/lena.jpg", 0) # read in image as a grayscale
+    img = cv2.imread("./data/lena.jpg", 0) # read in image as a grayscale
     fft_img = np.log(np.abs(np.fft.fftshift(np.fft.fft2(img)))) # compute 2d fft
 
     seq = np.array([img / 255, fft_img / np.max(fft_img)]) # concatenate images
@@ -337,7 +337,7 @@ def create_kspace():
     into a spatial image 
     '''
 
-    slice_kspace = np.load("./Fantastic-Fourier-Transform/data/knee_kspace.npy")[:-1] # import data (first 20 2d slice of the kspace in 5 slice intervals)
+    slice_kspace = np.load("./data/knee_kspace.npy")[:-1] # import data (first 20 2d slice of the kspace in 5 slice intervals)
 
     frames = np.empty(shape=(slice_kspace.shape[0], 2, slice_kspace.shape[-2], slice_kspace.shape[-1]))
     frames[:, 0, :, :] = np.log((np.abs(slice_kspace) + 1e-9)) # put original kspace data into the frames (log magnitude)
