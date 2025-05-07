@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import streamlit as st
+import h5py
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -12,22 +13,23 @@ import time
 import json
 
 @st.cache_data
-def load():
+def cos_wave(f):
 
     # x and y data
-    x = np.arange(0, 20, 0.1)
-    y = np.cos(x)
+    x = np.arange(0,2,0.01) 
+    y = np.cos(x * 2 * np.pi * f)
     
     df = pd.DataFrame({'x': x, 'y': y}) # create dataframe
 
     fig = px.line(df, x='x', y='y') # basic visualization
 
+    '''
     steps = []
-    for f in range(0, 51):  # Add frequencies from 0 to 5 (in 0.1 intervals)
+    for f in range(0, 6):  # Add frequencies from 0 to 5
         step = {
             "method": "update",
-            "args": [{"y": [np.sin(0.1 * f * x)]}],
-            "label": str(f*0.1),
+            "args": [{"y": [np.cos(2 * np.pi * f * x)]}],
+            "label": str(np.round(f)),
         }
         steps.append(step)
 
@@ -43,9 +45,38 @@ def load():
 
     # Update the layout with the slider
     fig.update_layout(sliders=sliders)
+    '''
 
     return fig # retrun vis
 
+def create_winding(freq):
+
+    fig = make_subplots(1, 2)
+
+    sf_list = np.arange(0, 10, 0.1)
+    x = np.arange(0,2,0.01) 
+    cos_wave = np.cos(x * 2 * np.pi * freq)
+    steps = []
+
+    # compute winding x and y coordinates
+    x_coords = [cos_wave[i]*np.cos(x[i]*5*2*np.pi) for i in range(len(x))]
+    y_coords = [cos_wave[i]*np.sin(x[i]*5*2*np.pi) for i in range(len(x))]
+
+
+    df = pd.DataFrame({'x': x_coords, 'y': y_coords}) # create dataframe
+
+    fig = px.line(df, x='x', y='y', width=250, height=500) # basic visualization
+    '''
+    for idx, sf in enumerate(sf_list):
+
+
+        step ={
+            "method": "update",
+            "args": [{"y": [np.cos(2 * np.pi * freq * x)]}],
+            "label": str(np.round(freq)),
+        }
+    '''
+    return fig
 
 def create_freq_img(freq, angle, mag, H, W):
 
@@ -118,7 +149,7 @@ def create_freq_chart():
     return fig
 
 
-
+@st.cache_data
 def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     '''
     Creates a sequence of sinusoid grating and corresponding FFT with variable frequencies
@@ -137,7 +168,7 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
         frames[i, 0, :, :] = display_img
         frames[i, 1, :, :] = fft_img / np.max(fft_img) 
     
-    fig = px.imshow(np.array(frames), color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
     
     # plot text labels
     fig.layout.annotations[0]['text'] = "Spatial Domain"
@@ -161,6 +192,7 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     return fig
 
 
+@st.cache_data
 def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     '''
     Creates a sequence of sinusoid grating and corresponding FFT with variable orientations
@@ -177,7 +209,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
         frames[i, 0, :, :] = display_img
         frames[i, 1, :, :] = fft_img / np.max(fft_img) 
     
-    fig = px.imshow(np.array(frames), color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
     fig.layout.annotations[0]['text'] = "Spatial Domain"
     fig.layout.annotations[1]['text'] = "Frequency Domain"
     
@@ -199,6 +231,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     return fig
 
 
+@st.cache_data
 def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
     '''
     Creates a sequence of sinusoid grating and corresponding FFT with variable frequencies
@@ -215,7 +248,7 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
         frames[i, 0, :, :] = display_img
         frames[i, 1, :, :] = fft_img / np.max(fft_img) 
     
-    fig = px.imshow(np.array(frames), color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
     fig.layout.annotations[0]['text'] = "Spatial Domain"
     fig.layout.annotations[1]['text'] = "Frequency Domain"
 
@@ -236,6 +269,7 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
     # Build the figure
     return fig
 
+@st.cache_data
 def create_lena_fft():
     '''
     Creates a plotly figure containing the image and corresponding fft for Lena
@@ -257,16 +291,12 @@ def create_lena_fft():
 
     return fig
 
-def create_fft_showcase():
+def create_fft_showcase(option):
     '''
     step-by-step visualization of the fft process
     '''
 
-    img = np.array([[0.5, 0.5, 0.5, 0.5, 0.5],
-                    [0.5, 0.5, 1, 0.5, 0.5],
-                    [0.5, 1, 1, 1, 0.5],
-                    [0.5, 0.5, 1, 0.5, 0.5], 
-                    [0.5, 0.5, 0.5, 0.5, 0.5]]) # create 4x4 matrix of grayscale pixels
+    img = select_shape(option)# create 5x5 matrix of grayscale pixels
 
     fig = make_subplots(2, 2, row_heights=[100]*2, column_widths=[100]*2)
 
@@ -277,17 +307,17 @@ def create_fft_showcase():
     fft1, fft2, fft3 = np.empty_like(img), np.empty_like(img), None
 
     for col in range(img.shape[1]): # compute y direction ffts
-        fft1[:, col] = np.fft.fft(img[:, col]).real
+        fft1[:, col] = np.fft.fft(img[:, col])
 
     for row in range(fft1.shape[0]): # compute x direction ffts
-        fft2[row, :] = np.fft.fft(fft1[row, :]).real
+        fft2[row, :] = np.fft.fft(fft1[row, :])
     
     fft3 = np.log(np.abs(np.fft.fftshift(fft2.copy()))) # shift and log
 
     # create heat maps
     h1 = go.Heatmap({'z': np.around(img, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
-    h2 = go.Heatmap({'z': np.around(fft1, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
-    h3 = go.Heatmap({'z': np.around(fft2, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
+    h2 = go.Heatmap({'z': np.around(np.abs(fft1), 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
+    h3 = go.Heatmap({'z': np.around(np.abs(fft2), 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
     h4 = go.Heatmap({'z': np.around(fft3, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
 
     fig.add_trace(h1, row=1, col=1)
@@ -295,7 +325,82 @@ def create_fft_showcase():
     fig.add_trace(h3, row=2, col=1)
     fig.add_trace(h4, row=2, col=2)
 
+    # update yaxes so they are not upside down
+    fig.update_yaxes(autorange="reversed", showticklabels=False)
+
     return fig
 
+@st.cache_data
+def create_kspace():
+    '''
+    Creates a visualization showing the transformation of MRI image from from raw kspace data
+    into a spatial image 
+    '''
+
+    slice_kspace = np.load("./Fantastic-Fourier-Transform/data/knee_kspace.npy")[:-1] # import data (first 20 2d slice of the kspace in 5 slice intervals)
+
+    frames = np.empty(shape=(slice_kspace.shape[0], 2, slice_kspace.shape[-2], slice_kspace.shape[-1]))
+    frames[:, 0, :, :] = np.log((np.abs(slice_kspace) + 1e-9)) # put original kspace data into the frames (log magnitude)
+    for i in range(slice_kspace.shape[0]):
+        fft_img = np.log(np.abs(np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(slice_kspace[i]))))) # compute inverse fft
+        frames[i, 1, :, :] = normalize(fft_img) # add to frame
+        frames[i, 0, :, :] = normalize(frames[i, 0, :, :])
+    
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    
+    fig.layout.annotations[0]['text'] = "Original Kspace Image"
+    fig.layout.annotations[1]['text'] = "Reconstructed Spatial Image"
+    
+    # update plot title for each frame
+    _ = [fig.frames[i]['layout'].update(title_text=f'Slice {i*5}') for i in range(slice_kspace.shape[0])]
+
+    # update slider and figure
+    fig.update_layout(sliders=[{'currentvalue': {'visible' : False}}], coloraxis_showscale=False) 
+    
+    # update figure axes
+    fig.update_xaxes(title_text='Kx', title_standoff=5, showticklabels=False, row=1, col=1)
+    fig.update_yaxes(title_text='Ky', title_standoff=5, showticklabels=False, row=1, col=1)
+    fig.update_xaxes(title_text='X Pixel', title_standoff=5, showticklabels=False, row=1, col=2)
+    fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=2)
+
+    return fig
+
+@st.cache_data
+def normalize(x): # normalize data values in an array to the range [0 - 1]
+    return x - np.min(x) / (np.max(x) - np.min(x))
+
+
+def select_shape(option): # returns a 5x5 array of a shape based on the option string
+
+    if option == None:
+        return (np.zeroes(shape=(5,5)) + 0.5)
+    
+    elif option == 'Star':
+        return np.array([[0.5, 0.5, 1, 0.5, 0.5],
+                         [0.5, 1, 1, 1, 0.5],
+                         [1, 1, 1, 1, 1],
+                         [0.5, 1, 0.5, 1, 0.5], 
+                         [1, 0.5, 0.5, 0.5, 1]])
+    
+    elif option == 'Square':
+        return np.array([[0.5, 0.5, 0.5, 0.5, 0.5],
+                         [0.5, 1, 1, 1, 0.5],
+                         [0.5, 1, 1, 1, 0.5],
+                         [0.5, 1, 1, 1, 0.5], 
+                         [0.5, 0.5, 0.5, 0.5, 0.5]])
+
+    elif option == 'Circle':
+        return np.array([[0.5, 0.5, 1, 0.5, 0.5],
+                         [0.5, 1, 1, 1, 0.5],
+                         [1, 1, 1, 1, 1],
+                         [0.5, 1, 1, 1, 0.5], 
+                         [0.5, 0.5, 1, 0.5, 0.5]]) 
+
+    elif option == 'X':
+        return np.array([[1, 0.5, 0.5, 0.5, 1],
+                         [0.5, 1, 0.5, 1, 0.5],
+                         [0.5, 0.5, 1, 0.5, 0.5],
+                         [0.5, 1, 0.5, 1, 0.5], 
+                         [1, 0.5, 0.5, 0.5, 1]])               
 
 
