@@ -1,7 +1,7 @@
 numpy
 matplotlib
 streamlit
-opencv-python
+opencv-python-headless
 plotly
 pandas
 h5py
