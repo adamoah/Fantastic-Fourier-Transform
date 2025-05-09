@@ -344,7 +344,7 @@ def create_kspace():
         frames[i, 1, :, :] = normalize(fft_img) # add to frame
         frames[i, 0, :, :] = normalize(frames[i, 0, :, :])
     
-    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_compression_level=5) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_string=True) # create animation
     
     fig.layout.annotations[0]['text'] = "Original Kspace Image"
     fig.layout.annotations[1]['text'] = "Reconstructed Spatial Image"
