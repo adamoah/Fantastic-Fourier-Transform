@@ -4,4 +4,3 @@ streamlit
 opencv-python-headless
 plotly
 pandas
-h5py

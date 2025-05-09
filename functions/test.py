@@ -1,11 +1,9 @@
 import numpy as np
 import cv2
 import streamlit as st
-import h5py
 
 import plotly.express as px
 import plotly.graph_objects as go
-import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import pandas as pd
@@ -346,7 +344,7 @@ def create_kspace():
         frames[i, 1, :, :] = normalize(fft_img) # add to frame
         frames[i, 0, :, :] = normalize(frames[i, 0, :, :])
     
-    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_compression_level=5) # create animation
     
     fig.layout.annotations[0]['text'] = "Original Kspace Image"
     fig.layout.annotations[1]['text'] = "Reconstructed Spatial Image"
@@ -373,7 +371,7 @@ def normalize(x): # normalize data values in an array to the range [0 - 1]
 def select_shape(option): # returns a 5x5 array of a shape based on the option string
 
     if option == None:
-        return (np.zeroes(shape=(5,5)) + 0.5)
+        return (np.zeros(shape=(5,5)) + 0.5)
     
     elif option == 'Star':
         return np.array([[0.5, 0.5, 1, 0.5, 0.5],
@@ -404,3 +402,37 @@ def select_shape(option): # returns a 5x5 array of a shape based on the option s
                          [1, 0.5, 0.5, 0.5, 1]])               
 
 
+def create_mri_reconstruction(image_num, radius):
+    image = cv2.imread(f"./data/Tumor_{image_num}.JPG", 0) # read in image in gray scale
+
+    center_x, center_y = (image.shape[0]) / 2, (image.shape[1]) / 2 # get image center pixel
+
+    # create x and y coordinates for each pixel
+    x = np.arange(-center_x, center_x, 1)
+    y = np.arange(-center_y, center_y, 1)
+    xx, yy = np.meshgrid(y, x)
+
+    # create mask
+    mask = np.where(xx**2 + yy**2 <= radius**2, 0, 1)
+
+    # compute fft and reconstruct the image after masking
+    fft_img = np.fft.fftshift(np.fft.fft2(image))*mask
+    reconstructed_img = np.log(np.abs(np.fft.ifft2(np.fft.ifftshift(fft_img))))
+    reconstructed_img = np.where(reconstructed_img > 3.25, reconstructed_img*3, 0)
+    
+    fig_fft = px.imshow(np.log(np.abs(fft_img)), color_continuous_scale='viridis')
+    fig_reconstruct = px.imshow(reconstructed_img, color_continuous_scale='gray')
+
+    # remove color axis
+    fig_fft.update_layout(coloraxis_showscale=False) 
+    fig_reconstruct.update_layout(coloraxis_showscale=False) 
+    
+    # update figure axes
+    fig_fft.update_xaxes(showticklabels=False)
+    fig_fft.update_yaxes(showticklabels=False)
+    fig_reconstruct.update_xaxes(showticklabels=False)
+    fig_reconstruct.update_yaxes(showticklabels=False)
+
+
+    # return both the masked fft and the reconstructed image
+    return image, fig_fft, fig_reconstruct 
