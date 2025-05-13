@@ -4,6 +4,7 @@ import streamlit as st
 
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import pandas as pd
@@ -11,7 +12,7 @@ import time
 import json
 
 @st.cache_data
-def cos_wave(f):
+def create_cos_wave(f):
 
     # x and y data
     x = np.arange(0,2,0.01) 
@@ -21,60 +22,71 @@ def cos_wave(f):
 
     fig = px.line(df, x='x', y='y') # basic visualization
 
-    '''
+    return fig, x, y # retrun vis and x and y
+
+
+@st.cache_data
+def create_winding(x, cos_wave):
+
+    fig = make_subplots(1, 2, subplot_titles=("Wrapped Cosine Wave", "Freqency vs. Amplitude"))
+
+    fig.update_xaxes(title_text="X", title_standoff=5, showticklabels=True, row=1, col=1)
+    fig.update_yaxes(title_text="Y", title_standoff=5, showticklabels=True, row=1, col=1)
+    fig.update_xaxes(title_text="Frequency", title_standoff=5, showticklabels=True, row=1, col=2)
+    fig.update_yaxes(title_text="Amplitude", title_standoff=5, showticklabels=True, row=1, col=2)
+
+    sf_list = np.arange(0, 3.1, 0.1)
     steps = []
-    for f in range(0, 6):  # Add frequencies from 0 to 5
-        step = {
-            "method": "update",
-            "args": [{"y": [np.cos(2 * np.pi * f * x)]}],
-            "label": str(np.round(f)),
-        }
+    
+    # flattened outer product of the x coordinates and sampling frequencies
+    x_sf = np.outer(sf_list, x).ravel()
+
+    # compute winding x and y coordinates for every sf
+    x_coords = cos_wave*np.cos(x_sf*2*np.pi).reshape(len(sf_list), len(x))
+    y_coords = cos_wave*np.sin(x_sf*2*np.pi).reshape(len(sf_list), len(x))
+
+    x_means = np.mean(x_coords, axis=1)
+    y_means = np.mean(y_coords, axis=1)
+    x_sums = np.sum(x_coords, axis=1)
+
+    # make frequency plot always visible since every frame uses the same frequency plot
+    fig.add_scatter(x=sf_list, y=x_sums, mode='lines', line=dict(color='blue'), row=1, col=2, visible=True)
+
+    for i in range(len(sf_list)):
+        visibility = True if i == 0 else False
+        
+        # add the winding plot and center of mass
+        fig.add_scatter(x=x_coords[i], y=y_coords[i], mode='lines', line=dict(color='blue'), row=1, col=1, visible=visibility)
+        fig.add_scatter(x=[x_means[i]], y=[y_means[i]], mode='markers', marker=dict(size=10, color='red'), row=1, col=1, visible=visibility, zorder=10)
+        # add center of mass for teh frequency
+        fig.add_scatter(x=[sf_list[i]], y=[x_sums[i]], mode='markers', marker=dict(size=10, color='red'), row=1, col=2, visible=visibility, zorder=10)
+        
+        # update the step in the slider so all traces are invisible
+        step = dict(
+            method = 'restyle',  
+            args = ['visible', ([False] * len(sf_list) * 3)],
+            label = str(round(sf_list[i], 1))
+        )
+
+        # updates so the only the traces with the current sampling frequency are visible
+        step['args'][1][0] = True
+        step['args'][1][(3*i+1):(3*i+3)] = [True]*3
+
+        fig.update_layout(
+            xaxis1_range=[-1, 1],
+            yaxis1_range=[-1, 1],
+            xaxis2_range=[0, 3.1],
+            yaxis2_range=[np.min(x_sums) - 2, np.max(x_sums) + 2],
+        )
+
         steps.append(step)
+    
+    sliders = [dict(steps=steps)]
+    fig.update_layout(sliders=sliders, showlegend=False)
 
-    # Create the slider
-    sliders = [
-        {
-            "active": 0,
-            "pad": {"t": 50},
-            "steps": steps,
-            "currentvalue": {"prefix": "Frequency: "},
-        }
-    ]
-
-    # Update the layout with the slider
-    fig.update_layout(sliders=sliders)
-    '''
-
-    return fig # retrun vis
-
-def create_winding(freq):
-
-    fig = make_subplots(1, 2)
-
-    sf_list = np.arange(0, 10, 0.1)
-    x = np.arange(0,2,0.01) 
-    cos_wave = np.cos(x * 2 * np.pi * freq)
-    steps = []
-
-    # compute winding x and y coordinates
-    x_coords = [cos_wave[i]*np.cos(x[i]*5*2*np.pi) for i in range(len(x))]
-    y_coords = [cos_wave[i]*np.sin(x[i]*5*2*np.pi) for i in range(len(x))]
-
-
-    df = pd.DataFrame({'x': x_coords, 'y': y_coords}) # create dataframe
-
-    fig = px.line(df, x='x', y='y', width=250, height=500) # basic visualization
-    '''
-    for idx, sf in enumerate(sf_list):
-
-
-        step ={
-            "method": "update",
-            "args": [{"y": [np.cos(2 * np.pi * freq * x)]}],
-            "label": str(np.round(freq)),
-        }
-    '''
     return fig
+
+
 
 def create_freq_img(freq, angle, mag, H, W):
 
@@ -94,57 +106,12 @@ def create_freq_img(freq, angle, mag, H, W):
     grating = mag * np.sin((2 * np.pi * gradient) / freq + (0 * np.pi) / 180)
     return grating
 
+
+
 @st.cache_data
 def fft_freq_img(img):
     return np.abs(np.fft.fftshift(np.fft.fft2(img))) # compute fft
 
-@st.cache_data
-def create_freq_chart():
-
-    fig = make_subplots(1, 2) # define number of subplots
-
-    # sinusoid grating params
-    freq, angle, H, W = 1, 0, 100, 100
-
-    display_img = create_freq_img(freq, angle, H, W) #create sinusoidal grating
-    fft_img = fft_freq_img(display_img) # compute fft image
-
-    seq = [display_img, fft_img / np.max(fft_img)]
-
-    fig = px.imshow(np.array(seq), color_continuous_scale='gray', facet_col=0)
-
-    fig.layout.annotations[0]['text'] = "Spatial Domain"
-    fig.layout.annotations[1]['text'] = "Frequency Domain"
-
-
-    steps, steps2 = [], []
-
-    for f in range(1, 11):  # Add frequencies from 0 to 10 
-        display_img = create_freq_img(f, angle, H, W) 
-        fft_img = fft_freq_img(display_img)
-        seq = [display_img, fft_img / np.max(fft_img)]
-        step = {
-            "method": "update",
-            "args": [{"z": seq}],
-            "label": str(f),
-        }
-        steps.append(step)
-
-    # Create the slider
-    sliders = [
-        {
-            "active": 0,
-            "pad": {"t": 50},
-            "steps": steps,
-            "currentvalue": {"prefix": "Frequency: "},
-        }
-    ]
-
-    fig.update_layout(sliders=sliders, coloraxis_showscale=False) # update figure
-    fig.update_xaxes(showticklabels=False) # remove tick labels
-    fig.update_yaxes(showticklabels=False)
-
-    return fig
 
 
 @st.cache_data
@@ -190,6 +157,7 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     return fig
 
 
+
 @st.cache_data
 def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     '''
@@ -227,6 +195,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
 
     # Build the figure
     return fig
+
 
 
 @st.cache_data
@@ -267,6 +236,8 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
     # Build the figure
     return fig
 
+
+
 @st.cache_data
 def create_lena_fft():
     '''
@@ -288,6 +259,8 @@ def create_lena_fft():
     fig.update_yaxes(showticklabels=False)
 
     return fig
+
+
 
 def create_fft_showcase(option):
     '''
@@ -328,6 +301,8 @@ def create_fft_showcase(option):
 
     return fig
 
+
+
 @st.cache_data
 def create_kspace():
     '''
@@ -335,7 +310,7 @@ def create_kspace():
     into a spatial image 
     '''
 
-    slice_kspace = np.load("./data/knee_kspace.npy")[:-1] # import data (first 20 2d slice of the kspace in 5 slice intervals)
+    slice_kspace = np.load("./data/knee_kspace.npy") # import data (first 20 2d slice of the kspace in 5 slice intervals)
 
     frames = np.empty(shape=(slice_kspace.shape[0], 2, slice_kspace.shape[-2], slice_kspace.shape[-1]))
     frames[:, 0, :, :] = np.log((np.abs(slice_kspace) + 1e-9)) # put original kspace data into the frames (log magnitude)
@@ -344,7 +319,7 @@ def create_kspace():
         frames[i, 1, :, :] = normalize(fft_img) # add to frame
         frames[i, 0, :, :] = normalize(frames[i, 0, :, :])
     
-    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_string=True) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_string=True, binary_compression_level=9, binary_format='jpg') # create animation
     
     fig.layout.annotations[0]['text'] = "Original Kspace Image"
     fig.layout.annotations[1]['text'] = "Reconstructed Spatial Image"
@@ -360,6 +335,8 @@ def create_kspace():
     fig.update_yaxes(title_text='Ky', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_xaxes(title_text='X Pixel', title_standoff=5, showticklabels=False, row=1, col=2)
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=2)
+
+    pio.write_html(fig, file="./data/kspace.html", auto_play=False)
 
     return fig
 
@@ -402,6 +379,7 @@ def select_shape(option): # returns a 5x5 array of a shape based on the option s
                          [1, 0.5, 0.5, 0.5, 1]])               
 
 
+
 def create_mri_reconstruction(image_num, radius):
     image = cv2.imread(f"./data/Tumor_{image_num}.JPG", 0) # read in image in gray scale
 
@@ -436,3 +414,10 @@ def create_mri_reconstruction(image_num, radius):
 
     # return both the masked fft and the reconstructed image
     return image, fig_fft, fig_reconstruct 
+
+@st.cache_data
+def get_kspace_html():
+    with open("./data/kspace.html", encoding="utf8") as f:
+        html = f.read()
+    
+    return html

@@ -10,11 +10,11 @@ def main():
     main function displays the webside
     '''
     st.title("Fantastic Fourier Transform")
-    value = st.slider("Frequency", 0.0, 9.0, value=0.0, step=0.1)
-    fig = cos_wave(value)
+    value = st.slider("Frequency", 0.0, 3.0, value=0.1, step=0.1)
+    fig, x, cos_wave = create_cos_wave(value)
     st.plotly_chart(fig)
 
-    st.plotly_chart(create_winding(value))
+    st.plotly_chart(create_winding(x, cos_wave))
 
     st.plotly_chart(create_lena_fft())
 
@@ -26,10 +26,13 @@ def main():
     st.plotly_chart(create_freq_seq())
     st.plotly_chart(create_orientation_seq())
     st.plotly_chart(create_amplitude_seq())
-    st.plotly_chart(create_kspace())
-
+    # st.plotly_chart(create_kspace())
+    
+    html = get_kspace_html()
+    st.components.v1.html(html, height=500)
+    
     option2 = st.selectbox("Select a MRI image:",
-                          ["Image"+str(i) for i in range(10)], index=None)
+                          ["Image "+str(i) for i in range(10)], index=None)
     number = st.number_input("Input a mask size:", value=0.0, step=0.1)
 
     o_image, fft, r_image = create_mri_reconstruction(75, number)
