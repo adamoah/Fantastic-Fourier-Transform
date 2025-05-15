@@ -8,7 +8,7 @@ import plotly.io as pio
 from plotly.subplots import make_subplots
 
 import pandas as pd
-import time
+import os
 import json
 
 @st.cache_data
@@ -120,9 +120,9 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     Creates a sequence of sinusoid grating and corresponding FFT with variable frequencies
     '''
 
-    frames = np.empty(shape=(5, 2, H, W))
+    frames = np.empty(shape=(6, 2, H, W))
     # Create animation frames
-    for i, f in enumerate(range(0, 21, 5)):
+    for i, f in enumerate(range(0, 11, 2)):
 
         freq = 1 if f == 0 else f
 
@@ -150,8 +150,6 @@ def create_freq_seq(angle=0, mag=1, H=100, W=100, freq=None):
     fig.update_xaxes(title_text='X Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
-
-    # pio.write_html(fig, file="./data/frequency.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -190,8 +188,6 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
     fig.update_xaxes(title_text='X Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
-
-    # pio.write_html(fig, file="./data/orientation.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -307,7 +303,7 @@ def create_fft_showcase(option):
 def create_kspace():
     '''
     Creates a visualization showing the transformation of MRI image from from raw kspace data
-    into a spatial image 
+    into a spatial image (DEPRECATED kspace is precomputed and displayed use get_kspace_html)
     '''
 
     slice_kspace = np.load("./data/knee_kspace.npy") # import data (first 20 2d slice of the kspace in 5 slice intervals)
@@ -337,8 +333,6 @@ def create_kspace():
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=2)
 
     pio.write_html(fig, file="./data/kspace.html", auto_play=False)
-
-    return fig
 
 @st.cache_data
 def normalize(x): # normalize data values in an array to the range [0 - 1]
@@ -378,12 +372,24 @@ def select_shape(option): # returns a 5x5 array of a shape based on the option s
                          [0.5, 1, 0.5, 1, 0.5], 
                          [1, 0.5, 0.5, 0.5, 1]])               
 
+@st.cache_data
+def create_mri_ffts():
+    # precompute the ffts for the tumor images to improve the websites loading speed
+    tumor_ffts = []
+    for f in sorted(os.listdir("./data/Tumors/")):
+        image = cv2.imread(f"./data/Tumors/{f}", 0)
+        fft = np.fft.fftshift(np.fft.fft2(image))
+        tumor_ffts.append(fft)
+
+    return tumor_ffts
 
 
-def create_mri_reconstruction(image_num, radius):
-    image = cv2.imread(f"./data/Tumor_{image_num}.JPG", 0) # read in image in gray scale
 
-    center_x, center_y = (image.shape[0]) / 2, (image.shape[1]) / 2 # get image center pixel
+def create_mri_reconstruction(image_fft, radius):
+    
+    # image = cv2.imread(f"./data/Tumors/{image_f}", 0) # read in image in gray scale
+
+    center_x, center_y = (image_fft.shape[0]) / 2, (image_fft.shape[1]) / 2 # get image center pixel
 
     # create x and y coordinates for each pixel
     x = np.arange(-center_x, center_x, 1)
@@ -391,16 +397,16 @@ def create_mri_reconstruction(image_num, radius):
     xx, yy = np.meshgrid(y, x)
 
     # create mask
-    mask = np.where(xx**2 + yy**2 <= radius**2, 0, 1)
+    # mask = np.where(xx**2 + yy**2 <= radius**2, 0, 1)
 
     # compute fft and reconstruct the image after masking
-    fft_img = np.fft.fftshift(np.fft.fft2(image))*mask
+    fft_img = np.where(xx**2 + yy**2 <= radius**2, 0, image_fft)
     reconstructed_img = np.log(np.abs(np.fft.ifft2(np.fft.ifftshift(fft_img))))
     reconstructed_img = np.where(reconstructed_img > 3.25, reconstructed_img*3, 0)
     
-    fig_fft = px.imshow(np.log(np.abs(fft_img)), color_continuous_scale='viridis')
-    fig_reconstruct = px.imshow(reconstructed_img, color_continuous_scale='gray')
-
+    fig_fft = px.imshow(np.log(np.abs(fft_img)), color_continuous_scale='viridis', binary_compression_level=9)
+    fig_reconstruct = px.imshow(reconstructed_img, color_continuous_scale='gray', binary_compression_level=9)
+    
     # remove color axis
     fig_fft.update_layout(coloraxis_showscale=False) 
     fig_reconstruct.update_layout(coloraxis_showscale=False) 
@@ -413,10 +419,12 @@ def create_mri_reconstruction(image_num, radius):
 
 
     # return both the masked fft and the reconstructed image
-    return image, fig_fft, fig_reconstruct 
+    return fig_fft, fig_reconstruct 
+
+
 
 @st.cache_data
-def get_kspace_html():
+def get_kspace_html(): # load kspace visual
     with open("./data/kspace.html", encoding="utf8") as f:
         html = f.read()
     
