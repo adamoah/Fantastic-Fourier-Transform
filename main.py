@@ -21,31 +21,46 @@ def main():
 
 
     st.header("Fourier Transform in 2D")
-    st.write("The Fourier Transform has many applications for analyzing 2D signals, or images." \
-    "In the same way a 1D FFT converts a 1D spatial signal into a frequency signal, a 2D FFT converts"\
-    "a spatial image into a frequency image. While images in the frequency domain can be intimidating at first"\
-    "understanding how frequency components relate to spatial components play a key role in image processing"\
+    st.write("The Fourier Transform has many applications for analyzing 2D signals, or images. " \
+    "In the same way a 1D FFT converts a 1D spatial signal into a frequency signal, a 2D FFT converts "\
+    "a spatial image into a frequency image. While images in the frequency domain can be intimidating at first "\
+    "understanding how frequency components relate to spatial components play a key role in image processing "\
     "techniques such as noise reduction, compression, feature detection, and more.")
 
     st.plotly_chart(create_lena_fft())
 
-    option = st.selectbox("Select a basic Shape:",
-                           ('Star', 'Square', 'Circle', 'X'), index=None)
     
     st.subheader("How to compute a 2D FFT")
-    st.text("Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:")
-    st.html("<ul>"\
-            "<pre><li><strong>Step 1:</strong> Convert the image to grayscale (This converts your image dimensions from (H, W, C) to (H, W)<br>ensuring it is actually 2D)<br></li></pre>"\
-            "<pre><li><strong>Step 2:</strong> Compute the 1D FFT of each column of the grayscale image<br></li></pre>"\
-            "<pre><li><strong>Step 3:</strong> Compute the 1D FFT of each row of the image from the previous step<br></li></pre>"\
-            "<pre><li><strong>Step 4:</strong> To get amplitude information, we first shift the low frequencies to the center and take the\n\tabsolute value of the real component of the FFT.</li></ul></pre>")
+    st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
+    st.markdown('''
+                    1. Convert the image to grayscale (This converts your image dimensions from (H, W, C) to (H, W) ensuring it is actually 2D)
+                    2. Compute the 1D FFT of each column of the grayscale image
+                    3. Compute the 1D FFT of each row of the image from the previous step
+                    4. To get amplitude information, we first shift the low frequencies to the center and take the absolute value of the real component of the FFT.''')
+    st.text("The heatmaps below visualize each of these steps to derive the FFT amplitudes for a variety of basic shapes. " \
+            "Use the drop down menu below to select different shapes and observe how their FFTs are derived")
+
+    option = st.selectbox("Select a basic Shape:",
+                        ('Star', 'Square', 'Circle', 'X'), index=None)
 
     st.plotly_chart(create_fft_showcase(option))
 
+    st.text("In the same way that the FFT shows us a 1D signal can be decomposed into a sum of sine and cosine wave, a " \
+            "2D signal can be decomposed into a sum of 2D sine waves, sometimes referred to as a sinusoidal grating.")
+    st.text("The following visual shows how changing different aspects of the grating affect what you see in the frequency space. " \
+            "You can use the slider to view the images for each value or use the play button to step through all values.")
+
     st.plotly_chart(create_freq_seq())
+    st.text("Changing the frequency of the grating has a proportional effect on the magnitude of the high frequencies and an inverse "
+    "effect on the low freqencies. In the spatial image, increased frequency signifies rapid changes in pixel intensity (brightness).")
     st.plotly_chart(create_orientation_seq())
+    st.text("Changing the orientation of the grating has a proportional effect on the angle of the magnitudes in the frequency space. " \
+            "In the spatial image, the orientation signifies the direction of the observed pixel intensity change.")
     st.plotly_chart(create_amplitude_seq())
-    
+    st.text("Changing the magnitude of the grating changes the brightness of the image and scales the magnitudes" \
+            "of the FFT by the same factor. This is paticularly relevant to the DC component of the FFT (located in the center), which " \
+            "represents the \"average brightness\" of the image.")
+
     html = get_kspace_html()
     st.components.v1.html(html, height=500)
     

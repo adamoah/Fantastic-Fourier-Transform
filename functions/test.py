@@ -90,7 +90,7 @@ def create_winding(x, cos_wave):
 
 def create_freq_img(freq, angle, mag, H, W):
 
-    freq = 100 / freq
+    freq = 100 / freq if freq != 0 else 1000
     angle = angle + 90
 
     x = np.arange(W) # X and Y pixel coordinates 
@@ -195,9 +195,9 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
 
 
 @st.cache_data
-def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
+def create_amplitude_seq(freq=0, angle=45, H=100, W=100, mag=None):
     '''
-    Creates a sequence of sinusoid grating and corresponding FFT with variable frequencies
+    Creates a sequence of sinusoid grating and corresponding FFT with variable magnitudes
     '''
 
     frames = np.empty(shape=(5, 2, H, W))
@@ -209,8 +209,8 @@ def create_amplitude_seq(freq=7, angle=45, H=100, W=100, mag=None):
 
         # append images to frame
         frames[i, 0, :, :] = display_img
-        frames[i, 1, :, :] = fft_img / np.max(fft_img) 
-    
+        frames[i, 1, :, :] = fft_img / np.max(fft_img)
+
     fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
     fig.layout.annotations[0]['text'] = "Spatial Domain"
     fig.layout.annotations[1]['text'] = "Frequency Domain"
@@ -265,7 +265,11 @@ def create_fft_showcase(option):
 
     img = select_shape(option)# create 5x5 matrix of grayscale pixels
 
-    fig = make_subplots(2, 2, row_heights=[100]*2, column_widths=[100]*2)
+    fig = make_subplots(2, 2, row_heights=[100]*2, column_widths=[100]*2, vertical_spacing=0.1, horizontal_spacing=0.1, subplot_titles=
+                        ("(1) Original Spatial Image",
+                         "(2) Column-wise FFT of (1)",
+                         "(3) Row-wise FFT of (2)",
+                         "(4) Log of frequency amplitudes"))
 
     # create fft after each step
     # fft1 stores the frequency magnitudes of img in the y direction
@@ -282,17 +286,21 @@ def create_fft_showcase(option):
     fft3 = np.log(np.abs(np.fft.fftshift(fft2.copy()))) # shift and log
 
     # create heat maps
-    h1 = go.Heatmap({'z': np.around(img, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
-    h2 = go.Heatmap({'z': np.around(np.abs(fft1), 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
-    h3 = go.Heatmap({'z': np.around(np.abs(fft2), 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
-    h4 = go.Heatmap({'z': np.around(fft3, 2)}, colorscale='Viridis', texttemplate="%{z}", showscale=False)
+    h1 = go.Heatmap({'z': np.around(img, 2)}, colorscale='Viridis', texttemplate="%{z}", textfont={'size':15}, showscale=False)
+    h2 = go.Heatmap({'z': np.around(np.abs(fft1), 2)}, colorscale='Viridis', texttemplate="%{z}", textfont={'size':15}, showscale=False)
+    h3 = go.Heatmap({'z': np.around(np.abs(fft2), 2)}, colorscale='Viridis', texttemplate="%{z}", textfont={'size':15}, showscale=False)
+    h4 = go.Heatmap({'z': np.around(fft3, 2)}, colorscale='Viridis', texttemplate="%{z}", textfont={'size':15}, showscale=False)
 
+
+    # add heatmaps to the figure
     fig.add_trace(h1, row=1, col=1)
     fig.add_trace(h2, row=1, col=2)
     fig.add_trace(h3, row=2, col=1)
     fig.add_trace(h4, row=2, col=2)
 
-    # update yaxes so they are not upside down
+    # update axes and layout size
+    fig.update_layout(height=800, width=500)
+    fig.update_xaxes(showticklabels=False)
     fig.update_yaxes(autorange="reversed", showticklabels=False)
 
     return fig
