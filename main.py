@@ -89,7 +89,7 @@ def main():
             with st.expander("Click to reveal the original image:"):
                 st.image("./data/Tumors/"+tumor_files[idx])
     with tab3:
-        st.text("Applications are not only limited to visuals. We can also utilize Fourier transforms for audio as well! Let us look at this particular chord.\ 
+        st.text("Applications are not only limited to visuals. We can also utilize Fourier transforms for audio as well! Let us look at this particular chord." \ 
         "For simplicity's sake, we will only look at the C major scale. You can play the chord below.")
         st.audio("data/piano/c-major-chord.mp3", format="audio/mpeg", loop=False)
         st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?"
