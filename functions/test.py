@@ -7,6 +7,7 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
+import librosa 
 import pandas as pd
 import os
 import json
