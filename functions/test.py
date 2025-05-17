@@ -463,6 +463,6 @@ def audio_showcase():
     piano_E4, sr3 = librosa.load(os.path.join(os.getcwd(), E4))
     piano_G4, sr4 = librosa.load(os.path.join(os.getcwd(), G4))
     
-    plot_magnitude_spectrum(piano_chord, "chord", sr1, 0.020)
+    return plot_magnitude_spectrum(piano_chord, "chord", sr1, 0.020)
     
     
