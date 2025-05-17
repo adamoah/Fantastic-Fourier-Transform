@@ -448,7 +448,8 @@ def plot_magnitude_spectrum(signal, title, sr, f_ratio=1):
     num_frequency_bins = int(len(frequency) * f_ratio)
     df = pd.DataFrame({'x': frequency[:num_frequency_bins], 'y': magnitude_spectrum[:num_frequency_bins]})
     fig = px.line(df, x = 'x', y = 'y')
-    fig.show()
+
+    return fig
     
     
 def audio_showcase():
