@@ -19,18 +19,18 @@ def main():
 
     st.plotly_chart(create_winding(x, cos_wave))
 
-
-    st.header("Fourier Transform in 2D")
-    st.write("The Fourier Transform has many applications for analyzing 2D signals, or images. " \
-    "In the same way a 1D FFT converts a 1D spatial signal into a frequency signal, a 2D FFT converts "\
-    "a spatial image into a frequency image. While images in the frequency domain can be intimidating at first "\
-    "understanding how frequency components relate to spatial components play a key role in image processing "\
-    "techniques such as noise reduction, compression, feature detection, and more.")
-
-    st.plotly_chart(create_lena_fft())
-
-    tab1, tab2, tab3, tab4 = st.tabs(["2D FFT", "Grating Changes", "MRI", "Audio"])
+    tab1, tab2, tab3 = st.tabs(["2D FFT", "Grating Changes", "Audio"])
+    
     with tab1:
+        st.header("Fourier Transform in 2D")
+        st.write("The Fourier Transform has many applications for analyzing 2D signals, or images. " \
+        "In the same way a 1D FFT converts a 1D spatial signal into a frequency signal, a 2D FFT converts "\
+        "a spatial image into a frequency image. While images in the frequency domain can be intimidating at first "\
+        "understanding how frequency components relate to spatial components play a key role in image processing "\
+        "techniques such as noise reduction, compression, feature detection, and more.")
+
+        st.plotly_chart(create_lena_fft())
+    
         st.subheader("How to compute a 2D FFT")
         st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
         st.markdown('''
