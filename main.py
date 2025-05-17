@@ -41,7 +41,9 @@ def main():
             "Use the drop down menu below to select different shapes and observe how their FFTs are derived")
 
     tab1, tab2, tab3, tab4 = st.tabs(["Basic Shapes", "Grating Changes", "MRI", "Audio"])
+    data = np.random.randn(10, 1)
     tab1.subheader("test")
+    tab1.line_chart(data)
 
     option = st.selectbox("Select a basic Shape:",
                         ('Star', 'Square', 'Circle', 'X'), index=None)
