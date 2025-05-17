@@ -29,20 +29,18 @@ def main():
 
     st.plotly_chart(create_lena_fft())
 
-    
-    st.subheader("How to compute a 2D FFT")
-    st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
-    st.markdown('''
-                    1. Convert the image to grayscale (This converts your image dimensions from (H, W, C) to (H, W) ensuring it is actually 2D)
-                    2. Compute the 1D FFT of each column of the grayscale image
-                    3. Compute the 1D FFT of each row of the image from the previous step
-                    4. To get amplitude information, we first shift the low frequencies to the center and take the absolute value of the real component of the FFT.''')
-    st.text("The heatmaps below visualize each of these steps to derive the FFT amplitudes for a variety of basic shapes. " \
-            "Use the drop down menu below to select different shapes and observe how their FFTs are derived")
-
-    tab1, tab2, tab3, tab4 = st.tabs(["Basic Shapes", "Grating Changes", "MRI", "Audio"])
-        
+    tab1, tab2, tab3, tab4 = st.tabs(["2D FFT", "Grating Changes", "MRI", "Audio"])
     with tab1:
+        st.subheader("How to compute a 2D FFT")
+        st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
+        st.markdown('''
+                        1. Convert the image to grayscale (This converts your image dimensions from (H, W, C) to (H, W) ensuring it is actually 2D)
+                        2. Compute the 1D FFT of each column of the grayscale image
+                        3. Compute the 1D FFT of each row of the image from the previous step
+                        4. To get amplitude information, we first shift the low frequencies to the center and take the absolute value of the real component of the FFT.''')
+        st.text("The heatmaps below visualize each of these steps to derive the FFT amplitudes for a variety of basic shapes. " \
+                "Use the drop down menu below to select different shapes and observe how their FFTs are derived")
+
         option = st.selectbox("Select a basic Shape:",
                             ('Star', 'Square', 'Circle', 'X'), index=None)
     
@@ -50,6 +48,7 @@ def main():
     
         st.text("In the same way that the FFT shows us a 1D signal can be decomposed into a sum of sine and cosine wave, a " \
                 "2D signal can be decomposed into a sum of 2D sine waves, sometimes referred to as a sinusoidal grating.")
+    with tab2:
         st.text("The following visual shows how changing different aspects of the grating affect what you see in the frequency space. " \
                 "You can use the slider to view the images for each value or use the play button to step through all values.")
     
