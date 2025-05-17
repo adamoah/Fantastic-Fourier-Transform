@@ -89,6 +89,7 @@ def main():
             with st.expander("Click to reveal the original image:"):
                 st.image("./data/Tumors/"+tumor_files[idx])
     with tab3:
+        st.audio("data/piano/c-major-chord.mp3", format="audio/mpeg", loop=True)
         st.plotly_chart(audio_showcase())
     
 if __name__ == "__main__":
