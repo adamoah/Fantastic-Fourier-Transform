@@ -440,7 +440,6 @@ def get_kspace_html(): # load kspace visual
     
     return html
 
-@st.cache_data
 def plot_magnitude_spectrum(signal, title, sr, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
