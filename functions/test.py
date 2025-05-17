@@ -437,3 +437,30 @@ def get_kspace_html(): # load kspace visual
         html = f.read()
     
     return html
+
+@st.cache_data
+def plot_magnitude_spectrum(signal, title, sr, f_ratio=1):
+    ft = np.fft.fft(signal)
+    magnitude_spectrum = np.abs(ft)
+
+    frequency = np.linspace(0, sr, len(magnitude_spectrum))
+    num_frequency_bins = int(len(frequency) * f_ratio)
+    df = pd.DataFrame({'x': frequency[:num_frequency_bins], 'y': magnitude_spectrum[:num_frequency_bins]})
+    fig = px.line(df, x = 'x', y = 'y')
+    fig.show()
+    
+    
+def audio_showcase():
+    C4 = "piano/C4.mp3"
+    E4 = "piano/E4.mp3"
+    G4 = "piano/G4.mp3"
+    chord = "piano/c-major-chord.mp3"
+
+    piano_chord, sr1 = librosa.load(os.path.join(os.getcwd(), chord))
+    piano_C4, sr2 = librosa.load(os.path.join(os.getcwd(), C4))
+    piano_E4, sr3 = librosa.load(os.path.join(os.getcwd(), E4))
+    piano_G4, sr4 = librosa.load(os.path.join(os.getcwd(), G4))
+    
+    plot_magnitude_spectrum(piano_chord, "chord", sr1, 0.020)
+    
+    
