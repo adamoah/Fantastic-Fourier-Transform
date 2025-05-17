@@ -109,7 +109,6 @@ def create_freq_img(freq, angle, mag, H, W):
 
 
 
-@st.cache_data
 def fft_freq_img(img):
     return np.abs(np.fft.fftshift(np.fft.fft2(img))) # compute fft
 
@@ -196,7 +195,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
 
 
 @st.cache_data
-def create_amplitude_seq(freq=0, angle=45, H=100, W=100, mag=None):
+def create_amplitude_seq(freq=1, angle=45, H=100, W=100, mag=None):
     '''
     Creates a sequence of sinusoid grating and corresponding FFT with variable magnitudes
     '''
@@ -208,11 +207,14 @@ def create_amplitude_seq(freq=0, angle=45, H=100, W=100, mag=None):
         display_img = create_freq_img(freq, angle, mag*0.2, 100, 100) #create sinusoidal grating
         fft_img = fft_freq_img(display_img) # compute fft image
 
+        if i == 0: # to normalize the image color based on the maximum brightness of the image
+            max_mag = np.max(fft_img)*5
+
         # append images to frame
         frames[i, 0, :, :] = display_img
-        frames[i, 1, :, :] = fft_img / np.max(fft_img)
+        frames[i, 1, :, :] = fft_img / max_mag
 
-    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500) # create animation
+    fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, zmin=0, zmax=1) # create animation
     fig.layout.annotations[0]['text'] = "Spatial Domain"
     fig.layout.annotations[1]['text'] = "Frequency Domain"
 
@@ -284,7 +286,9 @@ def create_fft_showcase(option):
     for row in range(fft1.shape[0]): # compute x direction ffts
         fft2[row, :] = np.fft.fft(fft1[row, :])
     
-    fft3 = np.log(np.abs(np.fft.fftshift(fft2.copy()))) # shift and log
+    # shift and log
+    fft3 = np.abs(np.fft.fftshift(fft2.copy()))
+    fft3 = np.log(fft3, where=(fft3 != 0))
 
     # create heat maps
     h1 = go.Heatmap({'z': np.around(img, 2)}, colorscale='Viridis', texttemplate="%{z}", textfont={'size':15}, showscale=False)
@@ -349,29 +353,26 @@ def normalize(x): # normalize data values in an array to the range [0 - 1]
 
 
 def select_shape(option): # returns a 5x5 array of a shape based on the option string
-
-    if option == None:
-        return (np.zeros(shape=(5,5)) + 0.5)
     
-    elif option == 'Star':
-        return np.array([[0.5, 0.5, 1, 0.5, 0.5],
+    if option == 'Vertical Stripe':
+        return np.array([[0.5, 1, 1, 1, 0.5],
                          [0.5, 1, 1, 1, 0.5],
-                         [1, 1, 1, 1, 1],
+                         [0.5, 1, 1, 1, 0.5],
+                         [0.5, 1, 1, 1, 0.5], 
+                         [0.5, 1, 1, 1, 0.5]])
+    
+    elif option == 'Polka Dots':
+        return np.array([[1, 0.5,  1,  0.5, 1],
+                         [0.5, 1, 0.5, 1, 0.5],
+                         [1, 0.5,  1,  0.5, 1],
                          [0.5, 1, 0.5, 1, 0.5], 
-                         [1, 0.5, 0.5, 0.5, 1]])
-    
-    elif option == 'Square':
-        return np.array([[0.5, 0.5, 0.5, 0.5, 0.5],
-                         [0.5, 1, 1, 1, 0.5],
-                         [0.5, 1, 1, 1, 0.5],
-                         [0.5, 1, 1, 1, 0.5], 
-                         [0.5, 0.5, 0.5, 0.5, 0.5]])
+                         [1, 0.5,  1,  0.5, 1]])
 
-    elif option == 'Circle':
+    elif option == 'Plus Sign':
         return np.array([[0.5, 0.5, 1, 0.5, 0.5],
-                         [0.5, 1, 1, 1, 0.5],
-                         [1, 1, 1, 1, 1],
-                         [0.5, 1, 1, 1, 0.5], 
+                         [0.5, 0.5, 1, 0.5, 0.5],
+                         [1,   1,   1,   1,   1],
+                         [0.5, 0.5, 1, 0.5, 0.5], 
                          [0.5, 0.5, 1, 0.5, 0.5]]) 
 
     elif option == 'X':
