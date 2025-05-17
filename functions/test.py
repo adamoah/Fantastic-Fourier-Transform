@@ -453,7 +453,7 @@ def plot_magnitude_spectrum(signal, title, sr, f_ratio=1):
     
     
 def audio_showcase(mp3_name):
-    piano, sr = librosa.load(os.path.join(os.getcwd(), ,"data/piano/", mp3_name))
+    piano, sr = librosa.load(os.path.join(os.getcwd(), "data/piano/", mp3_name))
     
     return plot_magnitude_spectrum(piano, "chord", sr, 0.020)
     
