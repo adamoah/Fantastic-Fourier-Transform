@@ -91,26 +91,40 @@ def main():
     with tab3:
         st.text("Applications are not only limited to visuals. We can also utilize Fourier transforms for audio as well! Let us look at this particular chord. " \
         "For simplicity's sake, we will only look at the C major scale. You can play the chord below.")
+        
         st.audio("data/piano/c-major-chord.mp3", format="audio/mpeg", loop=False)
+        
         st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
+        
         st.plotly_chart(audio_showcase("c-major-chord.mp3"))
-        st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?")
+        
+        st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
+               " We've included an audio clip in case you wanted to figure this out using your ears.")
+        
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
         with stab1:
+            st.plotly_chart(audio_showcase("data/piano/C4.mp3"))
             st.plotly_chart(audio_showcase("C4.mp3"))
         with stab2:
+            st.plotly_chart(audio_showcase("data/piano/D4.mp3"))
             st.plotly_chart(audio_showcase("D4.mp3"))
         with stab3:
+            st.plotly_chart(audio_showcase("data/piano/E4.mp3"))
             st.plotly_chart(audio_showcase("E4.mp3"))
         with stab4:
+            st.plotly_chart(audio_showcase("data/piano/F4.mp3"))
             st.plotly_chart(audio_showcase("F4.mp3"))
         with stab5:
+            st.plotly_chart(audio_showcase("data/piano/G4.mp3"))
             st.plotly_chart(audio_showcase("G4.mp3"))
         with stab6:
+            st.plotly_chart(audio_showcase("data/piano/A4.mp3"))
             st.plotly_chart(audio_showcase("A4.mp3"))
         with stab7:
+            st.plotly_chart(audio_showcase("data/piano/B4.mp3"))
             st.plotly_chart(audio_showcase("B4.mp3"))
         with stab8:
+            st.plotly_chart(audio_showcase("data/piano/C5.mp3"))
             st.plotly_chart(audio_showcase("C5.mp3"))
     
 if __name__ == "__main__":
