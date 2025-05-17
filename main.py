@@ -40,6 +40,9 @@ def main():
     st.text("The heatmaps below visualize each of these steps to derive the FFT amplitudes for a variety of basic shapes. " \
             "Use the drop down menu below to select different shapes and observe how their FFTs are derived")
 
+    tab1, tab2, tab3, tab4 = st.tabs(["Basic Shapes", "Grating Changes", "MRI", "Audio"])
+    tab1.subheader("test")
+
     option = st.selectbox("Select a basic Shape:",
                         ('Star', 'Square', 'Circle', 'X'), index=None)
 
