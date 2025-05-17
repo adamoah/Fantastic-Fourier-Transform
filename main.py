@@ -88,6 +88,8 @@ def main():
     
             with st.expander("Click to reveal the original image:"):
                 st.image("./data/Tumors/"+tumor_files[idx])
+    with tab3:
+        audio_showcase()
     
 if __name__ == "__main__":
     main()
