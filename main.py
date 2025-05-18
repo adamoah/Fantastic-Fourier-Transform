@@ -114,7 +114,7 @@ def main():
                 "represents the \"average brightness\" of the image.")
     
 
-    with tab4:
+     with tab4:
         st.text("Sounds can also be turned into data as well. T")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
@@ -139,6 +139,7 @@ def main():
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
         notes = []
         graph_data = [];
+        length = len(curr_graph[0])
         
         for clip in audio:
             notes.append(audio_to_data(clip))
@@ -152,13 +153,13 @@ def main():
         if C4.button("C4", use_container_width=True):
             if flags[0] == 0:
                 flags[0] = 1;
-                c
             else:
                 flags[0] = 0;
         if D4.button("D4", use_container_width=True):
             if flags[1] == 0:
                 flags[1] = 1;
-                D4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[0][i] += graph_data[1][i]
             else:
                 flags[1] = 0;
         if E4.button("E4", use_container_width=True):
@@ -204,7 +205,7 @@ def main():
             # You can call any Streamlit command, including custom components:
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y", title='LFUCK')
-            fig.show()
+            st.plotly_chart(fig)
 
 
         
