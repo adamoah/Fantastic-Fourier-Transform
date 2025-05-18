@@ -118,7 +118,7 @@ def main():
         st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
 
         piano, sr = audio_to_data("c-major-chord.wav")
-        st.plotly_chart(audio_graph(piano, sr, 'svg', 1))
+        st.plotly_chart(audio_graph(piano, sr, 'svg', 0.025))
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
