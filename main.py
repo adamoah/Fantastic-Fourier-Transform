@@ -113,7 +113,6 @@ def main():
                 "of the FFT by the same factor. This is paticularly relevant to the DC component of the FFT (located in the center), which " \
                 "represents the \"average brightness\" of the image.")
     
-
      with tab4:
         st.text("Sounds can also be turned into data as well. T")
         
