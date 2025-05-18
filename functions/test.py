@@ -435,7 +435,7 @@ def get_kspace_html(): # load kspace visual
         html = f.read()
     
     return html
-
+    
 def create_df(signal, title, sr, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
