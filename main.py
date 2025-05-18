@@ -124,13 +124,21 @@ def main():
 
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         if C4.button("C4", use_container_width=True):
+            C4.markdown("poopoo")
         if D4.button("D4", use_container_width=True):
+            D4.markdown("peepee")
         if E4.button("E4", use_container_width=True):
+            E4.markdown("poopee")
         if F4.button("F4", use_container_width=True):
+            F4.markdown("peepoo")
         if G4.button("G4", use_container_width=True):
+            G4.markdown("pee")
         if A4.button("A4", use_container_width=True):
+            A4.markdown("poo")
         if B4.button("B4", use_container_width=True):
+            B4.markdown("i ran out of permutations")
         if C5.button("C5", use_container_width=True):
+            C5.markdown("i meant subsets")
 
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
