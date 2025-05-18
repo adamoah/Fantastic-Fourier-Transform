@@ -122,13 +122,32 @@ def main():
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
 
+        audio = ["data/pianoWav/C4.wav",
+                 "data/pianoWav/D4.wav",
+                 "data/pianoWav/E4.wav",
+                 "data/pianoWav/F4.wav",
+                 "data/pianoWav/G4.wav",
+                 "data/pianoWav/A4.wav",
+                 "data/pianoWav/B4.wav",
+                 "data/pianoWav/C5.wav"]
+        
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
+        notes = []
+        graph_data = [];
+        
+        for clip in audio:
+            notes.append(audio_to_data(clip))
+
+        for note in notes:
+            graph_data.append(audio_fft(note[0], note[1], 1))
+
+        curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         if C4.button("C4", use_container_width=True):
             if flags[0] == 0:
                 flags[0] = 1;
-                C4.markdown("poopoo")
+                c
             else:
                 flags[0] = 0;
         if D4.button("D4", use_container_width=True):
@@ -173,6 +192,15 @@ def main():
                 C5.markdown("poopoo")
             else:
                 flags[7] = 0;
+
+        with st.container():
+            st.write("This is inside the container")
+        
+            # You can call any Streamlit command, including custom components:
+            df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]}]
+            fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
+            fig.show()
+
 
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
