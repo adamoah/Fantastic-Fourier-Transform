@@ -450,7 +450,7 @@ def audio_fft(signal, sr, f_ratio=1):
 
     return frequency, num_frequency_bins, magnitude_spectrum
 
-def audio_graph(signal, title, sr, render_mode, f_ratio=1):
+def audio_graph(signal, sr, render_mode, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 
