@@ -21,7 +21,12 @@ def main():
         </style>
         
         <h1>The Fantastic Four(ier) Transform</h1>
-        <h2>And Its Applications</h2>"""
+        <h2>And Its Applications</h2>
+
+        <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst <br>
+        studying heat transfer. This tools turns functions of time into functions of frequency. But exactly what does this mean? <br>
+        Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform. <br>
+        Instead, we will be using you eyes, hands, and ears!</p>"""
     )
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
