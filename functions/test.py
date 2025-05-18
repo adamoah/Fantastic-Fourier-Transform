@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import streamlit as st
+import matplotlib.pyplot as plt
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -194,7 +195,7 @@ def create_orientation_seq(freq=7, mag=1, H=100, W=100, angle=None):
 
 
 
-@st.cache_data
+# @st.cache_data
 def create_amplitude_seq(freq=1, angle=45, H=100, W=100, mag=None):
     '''
     Creates a sequence of sinusoid grating and corresponding FFT with variable magnitudes
@@ -209,6 +210,7 @@ def create_amplitude_seq(freq=1, angle=45, H=100, W=100, mag=None):
 
         if i == 0: # to normalize the image color based on the maximum brightness of the image
             max_mag = np.max(fft_img)*5
+            max_img = np.max(display_img)*5
 
         # append images to frame
         frames[i, 0, :, :] = display_img
@@ -325,8 +327,8 @@ def create_kspace():
     frames[:, 0, :, :] = np.log((np.abs(slice_kspace) + 1e-9)) # put original kspace data into the frames (log magnitude)
     for i in range(slice_kspace.shape[0]):
         fft_img = np.log(np.abs(np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(slice_kspace[i]))))) # compute inverse fft
-        frames[i, 1, :, :] = normalize(fft_img) # add to frame
-        frames[i, 0, :, :] = normalize(frames[i, 0, :, :])
+        frames[i, 1, :, :] = fft_img # add to frame
+        frames[i, 0, :, :] = frames[i, 0, :, :]
     
     fig = px.imshow(frames, color_continuous_scale='gray', animation_frame=0, facet_col=1, height=500, binary_string=True, binary_compression_level=9, binary_format='jpg') # create animation
     
@@ -434,28 +436,31 @@ def get_kspace_html(): # load kspace visual
     
     return html
 
-def plot_magnitude_spectrum(signal, title, sr, f_ratio=1):
+def plot_magnitude_spectrum(signal, title, sr, render_mode, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 
     frequency = np.linspace(0, sr, len(magnitude_spectrum))
     num_frequency_bins = int(len(frequency) * f_ratio)
 
-def plot_plotly(frequency, num_frequency_bins):
+    return plot_plotly(frequency, num_frequency_bins, magnitude_spectrum, render_mode)
+
+def plot_plotly(frequency, num_frequency_bins, magnitude_spectrum, render_mode):
     df = pd.DataFrame({'x': frequency[:num_frequency_bins], 'y': magnitude_spectrum[:num_frequency_bins]})
-    fig = px.line(df, x = 'x', y = 'y')
+    fig = px.line(df, x = 'x', y = 'y', render_mode=render_mode)
 
     return fig
 
-def plot_mat(frequency, num_frequency_bins, title):
-    plt.figure(figsize=(6,5))
-    return plt.plot(frequency[:num_frequency_bins], magnitude_spectrum[:num_frequency_bins])
+def plot_mat(frequency, num_frequency_bins, title, magnitude_spectrum):
+    fig, ax = plt.subplots(figsize=(6,5))
+    ax.plot(frequency[:num_frequency_bins], magnitude_spectrum[:num_frequency_bins])
+    return fig
     
     
     
-def audio_showcase(wav_name):
+def audio_showcase(wav_name, render_mode):
     piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
-    return plot_magnitude_spectrum(piano, "chord", sr, 0.025)
+    return plot_magnitude_spectrum(piano, "chord", sr, render_mode, 0.025)
     
     

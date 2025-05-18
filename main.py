@@ -13,15 +13,16 @@ def main():
     st.title("The Fantastic Four(ier) Transform")
     st.subheader("And its Applications")
 
-    value = st.slider("Frequency", 0.0, 3.0, value=0.1, step=0.1)
-    fig, x, cos_wave = create_cos_wave(value)
-    st.plotly_chart(fig)
-
-    st.plotly_chart(create_winding(x, cos_wave))
-
-    tab1, tab2, tab3, tab4 = st.tabs(["2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
-    with tab1: # tab with high level explaination on how the 2D FFT work
+    with tab1:
+        value = st.slider("Frequency", 0.0, 3.0, value=0.1, step=0.1)
+        fig, x, cos_wave = create_cos_wave(value)
+        st.plotly_chart(fig)
+
+        st.plotly_chart(create_winding(x, cos_wave))
+
+    with tab2: # tab with high level explaination on how the 2D FFT work
         st.header("Fourier Transform in 2D")
         st.write("The Fourier Transform has many applications for analyzing 2D signals, or images. " \
         "In the same way a 1D FFT converts a 1D spatial signal into a frequency signal, a 2D FFT converts "\
@@ -48,7 +49,7 @@ def main():
             st.text("Notice how the different patterns affect which regions have higher amplitude. " \
             "We will explore why this is in the next section")
     
-    with tab2: # tab with the 2d sine/cosine wave visuals
+    with tab3: # tab with the 2d sine/cosine wave visuals
         st.subheader("2D Sine and Cosine Waves")
         st.text("In the same way that the FFT shows us a 1D signal can be decomposed into a sum of sine and cosine wave, a " \
                 "2D signal can be decomposed into a sum of 2D sine waves, sometimes referred to as a sinusoidal grating.")
@@ -66,14 +67,14 @@ def main():
                 "represents the \"average brightness\" of the image.")
     
 
-    with tab3:
+    with tab4:
         st.text("Sounds can also be turned into data as well. T")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
         
         st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
         
-        st.plotly_chart(audio_showcase("c-major-chord.wav"))
+        st.plotly_chart(audio_showcase("c-major-chord.wav", 'svg'))
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
@@ -81,35 +82,56 @@ def main():
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
         with stab1:
             st.audio("data/pianoWav/C4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("C4.wav"))
+            st.plotly_chart(audio_showcase("C4.wav", 'webgl'))
         with stab2:
             st.audio("data/pianoWav/D4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("D4.wav"))
+            st.plotly_chart(audio_showcase("D4.wav", 'webgl'))
         with stab3:
             st.audio("data/pianoWav/E4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("E4.wav"))
+            st.plotly_chart(audio_showcase("E4.wav", 'webgl'))
         with stab4:
             st.audio("data/pianoWav/F4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("F4.wav"))
+            st.plotly_chart(audio_showcase("F4.wav", 'webgl'))
         with stab5:
             st.audio("data/pianoWav/G4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("G4.wav"))
+            st.plotly_chart(audio_showcase("G4.wav", 'webgl'))
         with stab6:
             st.audio("data/pianoWav/A4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("A4.wav"))
+            st.plotly_chart(audio_showcase("A4.wav", 'webgl'))
         with stab7:
             st.audio("data/pianoWav/B4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("B4.wav"))
+            st.plotly_chart(audio_showcase("B4.wav", 'webgl'))
         with stab8:
             st.audio("data/pianoWav/C5.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("C5.wav"))
+            st.plotly_chart(audio_showcase("C5.wav", 'webgl'))
 
-    with tab4:
+    with tab5:
         st.subheader("2D Application: MRI")
+
+        st.text("One application of FFT is for the reconstruction of Magnetic Resonance Imaging (MRI) images. " \
+        "When an MR scan is conducted, magnetic fields and radio waves are used to spin protons in the" \
+        "body out of equilibrium and record the emitted waves as the protons realign. By using a controlled gradient to slightly " \
+        "modify the magnetic field of the machine, it records waves from protons at different frequencies (Sound familiar?). " \
+        "By doing this across the X, Y, and Z axes, you create whats known as a k-space matrix, which stores amplitude and phase " \
+        "information of the recorded spatial frequiences. This is essential the same information output by the Fourier Transform " \
+        "meaning if we can use FFT to derive a frequency image from a spatail one, doing the inverse of the FFT means " \
+        "we can derive a spatial one from a frequency one.")
+        st.text("The visual below shows you the reconstructed spatial image from k-space data after an inverse FFT " \
+        "for various 2D cross-sections of a scanned knee. You can see how as the k-space gets more \"filled out\" " \
+        "we see more details in the reconstructed image.")
+
         html = get_kspace_html()
         st.components.v1.html(html, height=550)
         
-    
+        st.text("Another interesting application of the FFT is filtering. By removing or masking certain regions of the " \
+        "frequency image, we can preserve certain aspects of the spatial image. More specifically, by masking the low " \
+        "freqiency components (which encode the color contrast and \"smoothness\" of the image) we can preseve just the edge details and textures"
+        "(This is also know as a high-pass filter). " \
+        "In MRI, this can be useful for detecting abnormalities such as tumors, inflammation, or structural deformities.")
+        st.text("The visual below contains a set of 10 MRI brain scan of patients with tumors. For each image you can specify the mask size, " \
+        "and view the masked FFT and reconstructed image. Using the mask, your goal is to try to find the tumor in the reconstructed image. " \
+        "If you think you have found it, click on the reveal tab to see the original image.")
+
         tumor_files = sorted(os.listdir("./data/Tumors/"))
         tumor_choices = ['Tumor 100', 'Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 36', 'Tumor 65', 'Tumor 7', 'Tumor 75', 'Tumor 89', 'Tumor 97']
         tumor_ffts = create_mri_ffts()
@@ -117,7 +139,7 @@ def main():
     
         tumor = st.selectbox("Select a MRI image:",
                               tumor_choices, index=None)
-        number = st.number_input("Input a mask size:", value=0, step=1)
+        number = st.number_input("Input a mask size:", value=50, step=1)
     
     
         if tumor != None:
