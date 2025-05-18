@@ -13,6 +13,10 @@ def main():
     st.title("The Fantastic Four(ier) Transform")
     st.subheader("And its Applications")
 
+    components.html(
+        <div style="text-align: center"> test </div>
+    )
+
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
     with tab1:
