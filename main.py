@@ -15,8 +15,12 @@ def main():
 
     st.html(
     """<style>
-        h1 {text-align: center;}
-        h2 {text-align: center;}
+        h1 {
+            font-size: 80px;
+            text-align: center;}
+        h2 {
+            font-size: 60px;
+            text-align: center;}
         </style>
         
         <h1>The Fantastic Four(ier) Transform</h1>
