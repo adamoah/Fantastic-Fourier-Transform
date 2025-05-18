@@ -441,7 +441,7 @@ def audio_showcase(wav_name, render_mode):
     
     return audio_graph(piano, "chord", sr, 0.025, render_mode)
 
-def audio_graph(signal, title, sr, f_ratio=1, render_mode):
+def audio_graph(signal, title, sr, render_mode, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 
