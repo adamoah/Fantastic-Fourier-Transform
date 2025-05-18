@@ -128,54 +128,54 @@ def main():
             return ("🟩" if flag else "🟥")
 
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
-        if C4.button("C4", icon = choose_icon(flag[0]), use_container_width=True):
+        if C4.button("C4", icon = choose_icon(flags[0]), use_container_width=True):
             if flags[0] == 0:
                 flags[0] = 1;
                 C4.markdown("poopoo")
             else:
                 flags[0] = 0;
-        if D4.button("D4", icon = choose_icon(flag[1]), use_container_width=True):
+        if D4.button("D4", icon = choose_icon(flags[1]), use_container_width=True):
             if flags[1] == 0:
                 flags[1] = 1;
                 D4.markdown("poopoo")
             else:
                 flags[1] = 0;
-        if E4.button("E4", icon = choose_icon(flag[2]), use_container_width=True):
+        if E4.button("E4", icon = choose_icon(flags[2]), use_container_width=True):
             if flags[2] == 0:
                 flags[2] = 1;
                 E4.markdown("poopoo")
             else:
                 flags[2] = 0;
-        if F4.button("F4", icon = choose_icon(flag[3]), use_container_width=True):
+        if F4.button("F4", icon = choose_icon(flags[3]), use_container_width=True):
             if flags[3] == 0:
                 flags[3] = 1;
                 F4.markdown("poopoo")
             else:
                 flags[3] = 0;
-        if G4.button("G4", icon = choose_icon(flag[4]), use_container_width=True):
+        if G4.button("G4", icon = choose_icon(flags[4]), use_container_width=True):
             if flags[4] == 0:
                 flags[4] = 1;
                 G4.markdown("poopoo")
             else:
                 flags[4] = 0;
-        if A4.button("A4", icon = choose_icon(flag[5]), use_container_width=True):
+        if A4.button("A4", icon = choose_icon(flags[5]), use_container_width=True):
             if flags[5] == 0:
                 flags[5] = 1;
                 A4.markdown("poopoo")
             else:
                 flags[5] = 0;
-        if B4.button("B4", icon = choose_icon(flag[6]), use_container_width=True):
+        if B4.button("B4", icon = choose_icon(flags[6]), use_container_width=True):
             if flags[6] == 0:
                 flags[6] = 1;
                 B4.markdown("poopoo")
             else:
                 flags[6] = 0;
-        if C5.button("C5", icon = choose_icon(flag[7]), use_container_width=True):
-            if flags[6] == 0:
-                flags[6] = 1;
+        if C5.button("C5", icon = choose_icon(flags[7]), use_container_width=True):
+            if flags[7] == 0:
+                flags[7] = 1;
                 C5.markdown("poopoo")
             else:
-                flags[6] = 0;
+                flags[7] = 0;
 
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
