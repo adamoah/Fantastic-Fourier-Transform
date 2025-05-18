@@ -125,7 +125,7 @@ def main():
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
 
         def choose_icon(flag):
-            return ("🟩" if flag else: "🟥")
+            return ("🟩" if flag else "🟥")
 
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         if C4.button("C4", icon = choose_icon(flag[0]), use_container_width=True):
