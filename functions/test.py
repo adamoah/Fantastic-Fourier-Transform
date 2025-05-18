@@ -436,12 +436,21 @@ def get_kspace_html(): # load kspace visual
     
     return html
 
-def audio_showcase(wav_name, render_mode):
+def audio_to_data(wav_name):
     piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
-    return audio_graph(piano, "chord", sr, render_mode, 0.025)
+    return piano, sr
 
-def audio_graph(signal, title, sr, render_mode, f_ratio=1):
+def audio_fft(signal, sr, f_ratio=1):
+    ft = np.fft.fft(signal)
+    magnitude_spectrum = np.abs(ft)
+
+    frequency = np.linspace(0, sr, len(magnitude_spectrum))
+    num_frequency_bins = int(len(frequency) * f_ratio)
+
+    return frequency, num_frequency_bins, magnitude_spectrum
+
+def audio_graph(signal, sr, render_mode, f_ratio=1):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 

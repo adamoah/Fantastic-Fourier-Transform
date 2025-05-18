@@ -120,19 +120,39 @@ def main():
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
         
         st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
-        
-        st.plotly_chart(audio_showcase("c-major-chord.wav", 'svg'))
+
+        piano, sr = audio_to_data("c-major-chord.wav")
+        st.plotly_chart(audio_graph(piano, sr, 'svg', 0.025))
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
 
+        audio = ["C4.wav",
+                 "D4.wav",
+                 "E4.wav",
+                 "F4.wav",
+                 "G4.wav",
+                 "A4.wav",
+                 "B4.wav",
+                 "C5.wav"]
+        
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
+        notes = []
+        graph_data = [];
+        
+        for clip in audio:
+            notes.append(audio_to_data(clip))
+
+        for note in notes:
+            graph_data.append(audio_fft(note[0], note[1], 1))
+
+        curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         if C4.button("C4", use_container_width=True):
             if flags[0] == 0:
                 flags[0] = 1;
-                C4.markdown("poopoo")
+                c
             else:
                 flags[0] = 0;
         if D4.button("D4", use_container_width=True):
@@ -177,6 +197,15 @@ def main():
                 C5.markdown("poopoo")
             else:
                 flags[7] = 0;
+
+        with st.container():
+            st.write("This is inside the container")
+        
+            # You can call any Streamlit command, including custom components:
+            df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
+            fig = px.line(df, x="x", y="y", title='LFUCK')
+            fig.show()
+
 
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
