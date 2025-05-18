@@ -121,6 +121,17 @@ def main():
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
+
+        C4, D4, E4, F4, G4, A4, B4, c% = st.columns(8)
+        if C4.button("C4", use_container_width=True):
+        if D4.button("D4", use_container_width=True):
+        if E4.button("E4", use_container_width=True):
+        if F4.button("F4", use_container_width=True):
+        if G4.button("G4", use_container_width=True):
+        if A4.button("A4", use_container_width=True):
+        if B4.button("B4", use_container_width=True):
+        if C5.button("C5", use_container_width=True):
+
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
         with stab1:
