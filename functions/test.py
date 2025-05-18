@@ -439,7 +439,7 @@ def get_kspace_html(): # load kspace visual
 def audio_showcase(wav_name, render_mode):
     piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
-    return audio_graph(piano, "chord", sr, 0.025, render_mode)
+    return audio_graph(piano, "chord", sr, render_mode, 0.025)
 
 def audio_graph(signal, title, sr, render_mode, f_ratio=1):
     ft = np.fft.fft(signal)
