@@ -450,13 +450,6 @@ def plot_plotly(frequency, num_frequency_bins, magnitude_spectrum, render_mode):
     fig = px.line(df, x = 'x', y = 'y', render_mode=render_mode)
 
     return fig
-
-def plot_mat(frequency, num_frequency_bins, title, magnitude_spectrum):
-    fig, ax = plt.subplots(figsize=(6,5))
-    ax.plot(frequency[:num_frequency_bins], magnitude_spectrum[:num_frequency_bins])
-    return fig
-    
-    
     
 def audio_showcase(wav_name, render_mode):
     piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
