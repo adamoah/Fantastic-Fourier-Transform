@@ -14,7 +14,8 @@ def main():
     st.subheader("And its Applications")
 
     st.html(
-        """<div style="text-align: center"> test </div>"""
+        """<h1>The Fantastic Four(ier) Transform"</h1>
+            <h2>And Its Applications</h2>"""
     )
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
