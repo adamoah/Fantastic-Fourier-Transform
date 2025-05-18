@@ -435,26 +435,24 @@ def get_kspace_html(): # load kspace visual
         html = f.read()
     
     return html
+
+def audio_showcase(wav_name, render_mode):
+    piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
-def create_df(signal, title, sr, f_ratio=1):
+    return audio_graph(piano, "chord", sr, 0.025, render_mode)
+
+def audio_graph(signal, title, sr, f_ratio=1, render_mode):
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 
     frequency = np.linspace(0, sr, len(magnitude_spectrum))
     num_frequency_bins = int(len(frequency) * f_ratio)
-
     df = pd.DataFrame({'x': frequency[:num_frequency_bins], 'y': magnitude_spectrum[:num_frequency_bins]})
 
-    return df
-
-def plot_plotly(df, render_mode):
     fig = px.line(df, x = 'x', y = 'y', render_mode=render_mode)
 
     return fig
 
-def audio_showcase(wav_name):
-    piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
-    return create_df(piano, "chord", sr, 0.025)
     
     
