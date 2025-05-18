@@ -32,11 +32,38 @@ def main():
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
     with tab1:
+        st.html{
+        """
+        <p>To explain the Fourier transform visually, let us begin with a very simple case. Let us take the cosine wave seen below. A slider
+        is included to modify the frequency of our function. Assuming some math background, you can see that the wavelength is shortened 
+        over our time interval. If you do not have a math background, just think of our function as a line going up and down more times 
+        during an amount of time. This will be our function of time.</p>.
+        """
+        }
         value = st.slider("Frequency", 0.0, 3.0, value=0.1, step=0.1)
         fig, x, cos_wave = create_cos_wave(value)
         st.plotly_chart(fig)
 
+        st.html{
+        """
+        <p>Now how can we turn this into a function of frequency? The inuition behind the Fourier transform is to wrap our function of
+        time (shown above) around the origin seen below on the left. This particular resulting graph holds a special property however: 
+        we can choose how often we wrap our original function around! We will denote this our "winding frequency". We now have two 
+        distinct values in our analysis of the Fourier transform, the original frequncy and our winding frequency. Now what happens if 
+        we take the center of mass (sum of all x-positions of our points divided by the sum of all y-positions of our points) of our new 
+        graph? Obeserve below on the right.</p>
+        """
+        }
+        
         st.plotly_chart(create_winding(x, cos_wave))
+
+        st.html{
+        """
+        <p>As our winding frequency varies, so does our center of mass! Can you notice something in particular? The x-position of our 
+        center of mass holds a special relationship with the winding frequency of our graph on the left and most important the frequency
+        of our original graph! Let us see if you can finalize the connection between the three.</p>
+        """
+        }
 
     with tab2: # tab with high level explaination on how the 2D FFT work
         st.header("Fourier Transform in 2D")
