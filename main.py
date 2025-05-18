@@ -16,10 +16,10 @@ def main():
     st.html(
     """<style>
         h1 {
-            font-size: 60px;
+            font-size: 40px;
             text-align: center;}
         h2 {
-            font-size: 40px;
+            font-size: 25px;
             text-align: center;}
         </style>
         
