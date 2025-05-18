@@ -197,7 +197,7 @@ def main():
             st.write("This is inside the container")
         
             # You can call any Streamlit command, including custom components:
-            df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]}]
+            df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
             fig.show()
 
