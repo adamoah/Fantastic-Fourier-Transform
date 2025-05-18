@@ -123,14 +123,14 @@ def main():
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
 
-        audio = ["data/pianoWav/C4.wav",
-                 "data/pianoWav/D4.wav",
-                 "data/pianoWav/E4.wav",
-                 "data/pianoWav/F4.wav",
-                 "data/pianoWav/G4.wav",
-                 "data/pianoWav/A4.wav",
-                 "data/pianoWav/B4.wav",
-                 "data/pianoWav/C5.wav"]
+        audio = ["C4.wav",
+                 "D4.wav",
+                 "E4.wav",
+                 "F4.wav",
+                 "G4.wav",
+                 "A4.wav",
+                 "B4.wav",
+                 "C5.wav"]
         
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
         notes = []
