@@ -10,9 +10,6 @@ def main():
     '''
     main function displays the webside
     '''
-    st.title("The Fantastic Four(ier) Transform")
-    st.subheader("And its Applications")
-
     st.html(
     """<style>
         h1 {
