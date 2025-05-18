@@ -122,50 +122,79 @@ def main():
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
                " We've included an audio clip in case you wanted to figure this out using your ears.")
 
+        flags = [1, 0, 0, 0, 0, 0, 0, 0]
+
+        def choose_icon(flag):
+            return ("🟩" if flag else: "🟥")
+
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
-        if C4.button("C4", use_container_width=True):
-            C4.markdown("poopoo")
-        if D4.button("D4", use_container_width=True):
-            D4.markdown("peepee")
-        if E4.button("E4", use_container_width=True):
-            E4.markdown("poopee")
-        if F4.button("F4", use_container_width=True):
-            F4.markdown("peepoo")
-        if G4.button("G4", use_container_width=True):
-            G4.markdown("pee")
-        if A4.button("A4", use_container_width=True):
-            A4.markdown("poo")
-        if B4.button("B4", use_container_width=True):
-            B4.markdown("i ran out of permutations")
-        if C5.button("C5", use_container_width=True):
-            C5.markdown("i meant subsets")
+        if C4.button("C4", icon = choose_icon(flag[0]), use_container_width=True):
+            if flag[0] == 0:
+                flag[0] = 1;
+                C4.markdown("poopoo")
+            else:
+                flag[0] = 0;
+        if D4.button("D4", icon = choose_icon(flag[1]), use_container_width=True):
+            if flag[1] == 0:
+                flag[1] = 1;
+                D4.markdown("poopoo")
+            else:
+                flag[1] = 0;
+        if E4.button("E4", icon = choose_icon(flag[2]), use_container_width=True):
+            if flag[2] == 0:
+                flag[2] = 1;
+                E4.markdown("poopoo")
+            else:
+                flag[2] = 0;
+        if F4.button("F4", icon = choose_icon(flag[3]), use_container_width=True):
+            if flag[3] == 0:
+                flag[3] = 1;
+                F4.markdown("poopoo")
+            else:
+                flag[3] = 0;
+        if G4.button("G4", icon = choose_icon(flag[4]), use_container_width=True):
+            if flag[4] == 0:
+                flag[4] = 1;
+                G4.markdown("poopoo")
+            else:
+                flag[4] = 0;
+        if A4.button("A4", icon = choose_icon(flag[5]), use_container_width=True):
+            if flag[5] == 0:
+                flag[5] = 1;
+                A4.markdown("poopoo")
+            else:
+                flag[5] = 0;
+        if B4.button("B4", icon = choose_icon(flag[6]), use_container_width=True):
+            if flag[6] == 0:
+                flag[6] = 1;
+                B4.markdown("poopoo")
+            else:
+                flag[6] = 0;
+        if C5.button("C5", icon = choose_icon(flag[7]), use_container_width=True):
+            if flag[6] == 0:
+                flag[6] = 1;
+                C5.markdown("poopoo")
+            else:
+                flag[6] = 0;
 
         
         stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
         with stab1:
             st.audio("data/pianoWav/C4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("C4.wav", 'webgl'))
         with stab2:
             st.audio("data/pianoWav/D4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("D4.wav", 'webgl'))
         with stab3:
             st.audio("data/pianoWav/E4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("E4.wav", 'webgl'))
         with stab4:
             st.audio("data/pianoWav/F4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("F4.wav", 'webgl'))
         with stab5:
             st.audio("data/pianoWav/G4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("G4.wav", 'webgl'))
         with stab6:
             st.audio("data/pianoWav/A4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("A4.wav", 'webgl'))
         with stab7:
             st.audio("data/pianoWav/B4.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("B4.wav", 'webgl'))
         with stab8:
             st.audio("data/pianoWav/C5.wav", format="audio/mpeg", loop=False)
-            st.plotly_chart(audio_showcase("C5.wav", 'webgl'))
 
     with tab5:
         st.subheader("2D Application: MRI")
