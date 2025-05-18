@@ -23,9 +23,9 @@ def main():
         <h1>The Fantastic Four(ier) Transform</h1>
         <h2>And Its Applications</h2>
 
-        <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst <br>
-        studying heat transfer. This tools turns functions of time into functions of frequency. But exactly what does this mean? <br>
-        Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform. <br>
+        <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst 
+        studying heat transfer. This tools turns functions of time into functions of frequency. But exactly what does this mean? 
+        Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform.
         Instead, we will be using you eyes, hands, and ears!</p>"""
     )
 
