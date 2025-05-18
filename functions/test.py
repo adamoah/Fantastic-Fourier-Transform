@@ -397,20 +397,14 @@ def create_mri_ffts():
 
 def create_mri_reconstruction(image_fft, radius):
     
-    # image = cv2.imread(f"./data/Tumors/{image_f}", 0) # read in image in gray scale
+    h, w = (image_fft.shape[0]), (image_fft.shape[1]) # get image height and width
 
-    center_x, center_y = (image_fft.shape[0]) / 2, (image_fft.shape[1]) / 2 # get image center pixel
+    # create the mask
+    mask = np.ones(shape=(h, w), dtype=np.uint8)
+    cv2.circle(mask, (w // 2, h // 2), int(radius),  0, -1)
 
-    # create x and y coordinates for each pixel
-    x = np.arange(-center_x, center_x, 1)
-    y = np.arange(-center_y, center_y, 1)
-    xx, yy = np.meshgrid(y, x)
-
-    # create mask
-    # mask = np.where(xx**2 + yy**2 <= radius**2, 0, 1)
-
-    # compute fft and reconstruct the image after masking
-    fft_img = np.where(xx**2 + yy**2 <= radius**2, 0, image_fft)
+    # mask fft and reconstruct the image after masking
+    fft_img = image_fft*mask
     reconstructed_img = np.log(np.abs(np.fft.ifft2(np.fft.ifftshift(fft_img))))
     reconstructed_img = np.where(reconstructed_img > 3.25, reconstructed_img*3, 0)
     

@@ -44,9 +44,9 @@ def main():
         option = st.selectbox("Select a basic pattern:",
                             ('Vertical Stripe', 'Polka Dots', 'Plus Sign', 'X'), index=None)
         if option != None:
-                st.plotly_chart(create_fft_showcase(option))
-        st.text("Notice how the different patterns affect which regions have higher amplitude. " \
-        "We will explore why this is in the next section")
+            st.plotly_chart(create_fft_showcase(option))
+            st.text("Notice how the different patterns affect which regions have higher amplitude. " \
+            "We will explore why this is in the next section")
     
     with tab2: # tab with the 2d sine/cosine wave visuals
         st.subheader("2D Sine and Cosine Waves")
@@ -107,7 +107,7 @@ def main():
     with tab4:
         st.subheader("2D Application: MRI")
         html = get_kspace_html()
-        st.components.v1.html(html, height=500)
+        st.components.v1.html(html, height=550)
         
     
         tumor_files = sorted(os.listdir("./data/Tumors/"))
@@ -117,15 +117,15 @@ def main():
     
         tumor = st.selectbox("Select a MRI image:",
                               tumor_choices, index=None)
-        number = st.number_input("Input a mask size:", value=0.0, step=0.1)
+        number = st.number_input("Input a mask size:", value=0, step=1)
     
     
         if tumor != None:
             idx = tumor_choices.index(tumor)
             fft, r_image = create_mri_reconstruction(tumor_ffts[idx], number)
-    
+
             col1, col2 = st.columns(2)
-    
+
             col1.plotly_chart(fft)
             col2.plotly_chart(r_image)
     
