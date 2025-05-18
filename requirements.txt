@@ -5,4 +5,4 @@ opencv-python-headless
 plotly
 pandas
 librosa
-streamlit-plotly-events
+streamlit-image-comparison

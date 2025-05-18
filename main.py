@@ -1,6 +1,7 @@
 import numpy as np
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit_image_comparison import image_comparison
 import cv2 as cv
 import matplotlib.pyplot as plt
 from functions.test import *
@@ -28,7 +29,10 @@ def main():
         Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform.
         Instead, we will be using you eyes, hands, and ears!</p>"""
     )
-
+    
+    st.text("Use the slider to reveal the image!")
+    image_comparison(img1="./data/fantasticfft.png", img2="./data/fantastic4.jpeg", starting_position=99.9, show_labels=False, make_responsive=False)
+    
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
     with tab1:
@@ -40,7 +44,7 @@ def main():
         during an amount of time. This will be our function of time.</p>.
         """
         )
-        value = st.slider("Frequency", 0.0, 3.0, value=0.1, step=0.1)
+        value = st.slider("Frequency", 0.0, 3.0, value=1.0, step=0.1)
         fig, x, cos_wave = create_cos_wave(value)
         st.plotly_chart(fig)
 
