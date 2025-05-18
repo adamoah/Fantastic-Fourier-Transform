@@ -14,7 +14,7 @@ def main():
     st.subheader("And its Applications")
 
     components.html(
-        <div style="text-align: center"> test </div>
+        """<div style="text-align: center"> test </div>"""
     )
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
