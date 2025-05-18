@@ -13,7 +13,7 @@ def main():
     st.title("The Fantastic Four(ier) Transform")
     st.subheader("And its Applications")
 
-    components.html(
+    st.html(
         """<div style="text-align: center"> test </div>"""
     )
 
