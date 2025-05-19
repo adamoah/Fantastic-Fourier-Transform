@@ -138,7 +138,7 @@ def main():
         flags = [1, 0, 0, 0, 0, 0, 0, 0]
         notes = []
         graph_data = [];
-        length = len(curr_graph[0])
+        
         
         for clip in audio:
             notes.append(audio_to_data(clip))
@@ -147,6 +147,7 @@ def main():
             graph_data.append(audio_fft(note[0], note[1], 1))
 
         curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
+        length = len(curr_graph[0])
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         if C4.button("C4", use_container_width=True):
