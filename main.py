@@ -117,11 +117,13 @@ def main():
                 "represents the \"average brightness\" of the image.")
     
     with tab4:
-        st.text("Sounds can also be turned into data as well. T")
+        st.text("Fourier transform can also be used for audio! Let us listen to the audio clip below.")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
-        
-        st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
+
+        st.text("Seems that this is some sort of chord. For the knowledgable, you may already know what this is." \
+               "How about we try to figure this out quantitatively? Below, you can find the discrete fast Fourier" \
+               "transform of the audio clip. Can you notice something?")
 
         piano, sr = audio_to_data("c-major-chord.wav")
         st.plotly_chart(audio_graph(piano, sr, 'svg', 0.025))
@@ -258,8 +260,7 @@ def main():
 
         
         with st.container():
-        
-            # You can call any Streamlit command, including custom components:
+            # creating modifiable graph for "recreating the chord" activity
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y")
             st.plotly_chart(fig)
