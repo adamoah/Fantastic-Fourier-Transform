@@ -113,7 +113,7 @@ def main():
                 "of the FFT by the same factor. This is paticularly relevant to the DC component of the FFT (located in the center), which " \
                 "represents the \"average brightness\" of the image.")
     
-     with tab4:
+    with tab4:
         st.text("Sounds can also be turned into data as well. T")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
@@ -205,7 +205,8 @@ def main():
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y", title='LFUCK')
             st.plotly_chart(fig)
-            
+
+    
     with tab5:
         st.subheader("2D Application: MRI")
 
