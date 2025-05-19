@@ -29,10 +29,7 @@ def main():
         Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform.
         Instead, we will be using you eyes, hands, and ears!</p>"""
     )
-    
-    st.text("Use the slider to reveal the image!")
-    image_comparison(img1="./data/fantasticfft.png", img2="./data/fantastic4.jpeg", starting_position=99.9, show_labels=False, make_responsive=False)
-    
+        
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
     with tab1:
@@ -77,7 +74,13 @@ def main():
         "understanding how frequency components relate to spatial components play a key role in image processing "\
         "techniques such as noise reduction, compression, feature detection, and more.")
 
-        st.plotly_chart(create_lena_fft())
+        st.text("Use the slider to reveal the image!")
+        image_comparison(img1="./data/fantasticfft.png", 
+                         img2="./data/fantastic4.jpeg",
+                         label1="Image in Frequency Domain",
+                         label2="Image in Spatial Domain", 
+                         starting_position=99, make_responsive=False)
+
     
         st.subheader("How to compute a 2D FFT")
         st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
