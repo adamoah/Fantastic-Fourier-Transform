@@ -6,3 +6,4 @@ plotly
 pandas
 librosa
 streamlit-image-comparison
+scikit-image 
