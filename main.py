@@ -172,7 +172,7 @@ def main():
                     curr_graph[2][i] -= graph_data[1][2][i]
                     
         if E4.button("E4", use_container_width=True):
-           if flags[2] == 0:
+            if flags[2] == 0:
                 flags[2] = 1;
                 for i in range(length):
                     curr_graph[2][i] += graph_data[2][2][i]
@@ -182,7 +182,7 @@ def main():
                     curr_graph[2][i] -= graph_data[2][2][i]
                     
         if F4.button("F4", use_container_width=True):
-          if flags[3] == 0:
+            if flags[3] == 0:
                 flags[3] = 1;
                 for i in range(length):
                     curr_graph[2][i] += graph_data[3][2][i]
@@ -212,7 +212,7 @@ def main():
                     curr_graph[2][i] -= graph_data[5][2][i]
                     
         if B4.button("B4", use_container_width=True):
-           if flags[6] == 0:
+            if flags[6] == 0:
                 flags[6] = 1;
                 for i in range(length):
                     curr_graph[2][i] += graph_data[6][2][i]
@@ -222,7 +222,7 @@ def main():
                     curr_graph[2][i] -= graph_data[6][2][i]
                     
         if C5.button("C5", use_container_width=True):
-          if flags[7] == 0:
+            if flags[7] == 0:
                 flags[7] = 1;
                 for i in range(length):
                     curr_graph[2][i] += graph_data[7][2][i]
