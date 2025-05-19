@@ -205,27 +205,7 @@ def main():
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y", title='LFUCK')
             st.plotly_chart(fig)
-
-
-        
-        stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
-        with stab1:
-            st.audio("data/pianoWav/C4.wav", format="audio/mpeg", loop=False)
-        with stab2:
-            st.audio("data/pianoWav/D4.wav", format="audio/mpeg", loop=False)
-        with stab3:
-            st.audio("data/pianoWav/E4.wav", format="audio/mpeg", loop=False)
-        with stab4:
-            st.audio("data/pianoWav/F4.wav", format="audio/mpeg", loop=False)
-        with stab5:
-            st.audio("data/pianoWav/G4.wav", format="audio/mpeg", loop=False)
-        with stab6:
-            st.audio("data/pianoWav/A4.wav", format="audio/mpeg", loop=False)
-        with stab7:
-            st.audio("data/pianoWav/B4.wav", format="audio/mpeg", loop=False)
-        with stab8:
-            st.audio("data/pianoWav/C5.wav", format="audio/mpeg", loop=False)
-
+            
     with tab5:
         st.subheader("2D Application: MRI")
 
