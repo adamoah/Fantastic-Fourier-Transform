@@ -17,13 +17,14 @@ def main():
             font-size: 40px;
             text-align: center;}
         h2 {
+            margin-top: -40px;
             font-size: 25px;
             text-align: center;}
         </style>
         
         <h1>The Fantastic Four(ier) Transform</h1>
         <h2>And Its Applications</h2>
-
+        <h3>Introduction</h3>
         <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst 
         studying heat transfer. This tool turns functions of time into functions of frequency. But exactly what does this mean and why
         is this useful? Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier 
@@ -79,7 +80,8 @@ def main():
         image_comparison(img1="./data/fantasticfft.png", 
                         img2="./data/fantastic4.jpeg",
                         label1="Image in Frequency Domain",
-                        label2="Image in Spatial Domain", 
+                        label2="Image in Spatial Domain",
+                        width=800, 
                         starting_position=99, make_responsive=True)
 
     
@@ -118,6 +120,7 @@ def main():
                 "represents the \"average brightness\" of the image.")
     
     with tab4:
+        st.subheader("1D Application: Audio Analysis")
         st.text("Fourier transform can also be used for audio! Let us listen to the audio clip below.")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
