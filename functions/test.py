@@ -15,6 +15,9 @@ import json
 
 @st.cache_data
 def create_cos_wave(f):
+    '''
+    create a simple cosine wave
+    '''
 
     # x and y data
     x = np.arange(0,2,0.01) 
@@ -29,7 +32,11 @@ def create_cos_wave(f):
 
 @st.cache_data
 def create_winding(x, cos_wave):
+    '''
+    create a winding cosine wave
+    '''
 
+    # figure set u[
     fig = make_subplots(1, 2, subplot_titles=("Wrapped Cosine Wave", "Freqency vs. Amplitude"))
 
     fig.update_xaxes(title_text="X", title_standoff=5, showticklabels=True, row=1, col=1)
@@ -37,6 +44,7 @@ def create_winding(x, cos_wave):
     fig.update_xaxes(title_text="Frequency", title_standoff=5, showticklabels=True, row=1, col=2)
     fig.update_yaxes(title_text="Amplitude", title_standoff=5, showticklabels=True, row=1, col=2)
 
+    #sampling frequencies
     sf_list = np.arange(0, 3.1, 0.1)
     steps = []
     
@@ -47,6 +55,7 @@ def create_winding(x, cos_wave):
     x_coords = cos_wave*np.cos(x_sf*2*np.pi).reshape(len(sf_list), len(x))
     y_coords = cos_wave*np.sin(x_sf*2*np.pi).reshape(len(sf_list), len(x))
 
+    # get the center of mass
     x_means = np.mean(x_coords, axis=1)
     y_means = np.mean(y_coords, axis=1)
     x_sums = np.sum(x_coords, axis=1)
@@ -77,7 +86,7 @@ def create_winding(x, cos_wave):
         fig.update_layout(
             xaxis1_range=[-1, 1],
             yaxis1_range=[-1, 1],
-            xaxis2_range=[0, 3.1],
+            xaxis2_range=[-0.1, 3.1],
             yaxis2_range=[np.min(x_sums) - 2, np.max(x_sums) + 2],
         )
 
@@ -91,6 +100,9 @@ def create_winding(x, cos_wave):
 
 
 def create_freq_img(freq, angle, mag, H, W):
+    '''
+    create 2D sinusoid grating
+    '''
 
     freq = 100 / freq if freq != 0 else 1000
     angle = angle + 90
@@ -110,7 +122,7 @@ def create_freq_img(freq, angle, mag, H, W):
 
 
 
-def fft_freq_img(img):
+def fft_freq_img(img): # compute 2d fft magnitudes
     return np.abs(np.fft.fftshift(np.fft.fft2(img))) # compute fft
 
 
@@ -231,8 +243,6 @@ def create_amplitude_seq(freq=1, angle=45, H=100, W=100, mag=None):
     fig.update_xaxes(title_text='X Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
     fig.update_yaxes(title_text='Y Pixel', title_standoff=5, showticklabels=False, row=1, col=1)
     fig.update_yaxes(title_text='Y Frequency', title_standoff=5, showticklabels=False, row=1, col=2)
-
-    # pio.write_html(fig, file="./data/amplitude.html", auto_play=True)
 
     # Build the figure
     return fig
@@ -449,7 +459,8 @@ def audio_freq(sr, magnitude_spectrum, f_ratio=1):
     '''
     computes the frequency information (cached because its the same for each key)
     '''
-
+    
+    # compute freqency bins for the magnitudes
     frequency = np.linspace(0, sr, len(magnitude_spectrum))
     num_frequency_bins = int(len(frequency) * f_ratio)
 
@@ -493,7 +504,7 @@ def get_all_key_fft(audio):
         signal, sr = audio_to_data(clip)
         graph_data.append(audio_fft(signal))
 
-        if i == 0:
+        if i == 0: # since the frequencies are the same for all keys only compute it once
             frequency, num_bins = audio_freq(sr, graph_data[i], 0.025)
 
     return frequency, num_bins, graph_data
@@ -504,8 +515,8 @@ def get_chord_fft(audio):
     similar to the keys but caches the data so we don't
     have to keep recomputing
     '''
-
     piano, sr = audio_to_data(audio)
+
     chord_mag = audio_fft(piano)
     chord_freq, chord_bins = audio_freq(sr, chord_mag, 0.025)
 

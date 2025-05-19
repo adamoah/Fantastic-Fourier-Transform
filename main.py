@@ -34,7 +34,7 @@ def main():
         
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
     
-    with tab1:
+    with tab1: # tab visializing the cosine and winding example
         st.html(
         """
         <p>To explain the Fourier transform visually, let us begin with a very simple case. Let us take the cosine wave seen below. A slider
@@ -43,6 +43,7 @@ def main():
         during an amount of time. This will be our function of time.</p>
         """
         )
+        # set up slider and cosine wave
         value = st.slider("Frequency", 0.0, 3.0, value=1.0, step=0.1)
         fig, x, cos_wave = create_cos_wave(value)
         st.plotly_chart(fig)
@@ -57,7 +58,7 @@ def main():
         graph? Obeserve below on the right.</p>
         """
         )
-        
+        # create winding visualization
         st.plotly_chart(create_winding(x, cos_wave))
         st.markdown("(Inspired by [3Blue1Brown](https://www.youtube.com/watch?v=spUNpyF58BY))")
         st.html(
@@ -76,7 +77,7 @@ def main():
         "understanding how frequency components relate to spatial components play a key role in image processing "\
         "techniques such as noise reduction, compression, feature detection, and more.")
 
-        st.plotly_chart(create_fantastic4_fft())
+        st.plotly_chart(create_fantastic4_fft()) # image fft example
         st.markdown("(Image courtesy of [IMDB](https://www.imdb.com/title/tt1502712/))")
         
         st.subheader("How to compute a 2D FFT")
@@ -88,10 +89,12 @@ def main():
                         4. To get amplitude information, we first shift the low frequencies to the center and take the absolute value of the real component of the FFT.''')
         st.text("The heatmaps below visualize each of these steps to derive the FFT amplitudes for a variety of basic shapes. " \
                 "Use the drop down menu below to select different patterns and observe how their FFTs are derived")
-
+        
+        #pattern selection
         option = st.selectbox("Select a basic pattern:",
                             ('Vertical Stripe', 'Polka Dots', 'Plus Sign', 'X'), index=None)
-        if option != None:
+        
+        if option != None: # only display the visual if an option was selected
             st.plotly_chart(create_fft_showcase(option))
             st.text("Notice how the different patterns affect which regions have higher amplitude. " \
             "We will explore why this is in the next section")
@@ -101,7 +104,7 @@ def main():
         st.text("In the same way that the FFT shows us a 1D signal can be decomposed into a sum of sine and cosine wave, a " \
                 "2D signal can be decomposed into a sum of 2D sine waves, sometimes referred to as a sinusoidal grating.")
         st.text("The following visual shows how changing different aspects of the grating affect what you see in the frequency space.")
-    
+
         st.plotly_chart(create_freq_seq())
         st.text("Changing the frequency of the grating has a proportional effect on the magnitude of the high frequencies and an inverse "
         "effect on the low freqencies. In the spatial image, increased frequency signifies rapid changes in pixel intensity (brightness).")
@@ -113,17 +116,19 @@ def main():
                 "of the FFT by the same factor. This is paticularly relevant to the DC component of the FFT (located in the center), which " \
                 "represents the \"average brightness\" of the image.")
     
-    with tab4:
+    with tab4: # tab for audio example
         st.subheader("1D Application: Audio Analysis")
         st.text("Fourier transform can also be used for audio! Let us listen to the audio clip below.")
         
-        st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
+        # load in audio chord data
+        
+        st.audio("./data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
 
         st.text("Seems that this is some sort of chord. For the knowledgable, you may already know what this is." \
                " How about we try to figure this out quantitatively? Below, you can find the discrete fast Fourier" \
                " transform of the audio clip. Can you notice something?")
-
-        st.plotly_chart(get_chord_fft("c-major-chord.wav"))
+        
+        st.plotly_chart(get_chord_fft("c-major-chord.wav")) # chord fft
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the individual frequencies of the notes in the C major scale?" \
                "Trying recreating the graph above using the toggle buttons. Each one correspond to a particular note in the C major scale. You can play the reconstructed audio " \
@@ -139,8 +144,9 @@ def main():
                  "B4.wav",
                  "C5.wav"]
 
-        graph_data = get_all_key_fft(audio)
+        graph_data = get_all_key_fft(audio) # load fft data for all keys
 
+        # create a "blank" fft
         length = len(graph_data[0])
         curr_freq, curr_bins, curr_mag = graph_data[0], graph_data[1], np.zeros(shape=(length,))
         flags = [False, False, False, False, False, False, False, False]
@@ -148,15 +154,15 @@ def main():
         # 8 side-by-side containers to store the toggle buttons for each note
         note_cols = st.columns(8)
 
-        # for every toggle button, we add the corresponding note to the graph if it is on
+        # for every toggle button, we add the corresponding note's fft to the graph if it is turned on
         for i in range(8):
             with note_cols[i]:
                 flags[i] = st.toggle(audio[i][:2])
                 if flags[i]:
                     curr_mag += graph_data[2][i]
         
-        with st.container():
-            st.audio(np.fft.ifft(curr_mag), sample_rate=22050)
+        with st.container(): # display and play audio and fft
+            st.audio(np.fft.ifft(curr_mag), sample_rate=22050,  format="audio/mpeg", loop=False)
             # creating modifiable graph for "recreating the chord" activity
             st.plotly_chart(audio_graph(curr_freq, curr_bins, curr_mag))
         st.markdown("Audio courtesy of [Piano-MP3](https://github.com/fuhton/piano-mp3)")
@@ -166,7 +172,7 @@ def main():
 
     
     
-    with tab5:
+    with tab5: # tab with mri applications
         st.subheader("2D Application: MRI")
 
         st.text("One application of FFT is for the reconstruction of Magnetic Resonance Imaging (MRI) images. " \
@@ -181,6 +187,7 @@ def main():
         "for various 2D cross-sections of a scanned knee. You can see how as the k-space gets more \"filled out\" " \
         "we see more details in the reconstructed image.")
 
+        # load precomputed kspace and html
         html = get_kspace_html()
         st.components.v1.html(html, height=550)
         st.markdown("(Data courtesy of [FastMRI](https://fastmri.med.nyu.edu/))")
@@ -195,17 +202,18 @@ def main():
         "and view the masked FFT and reconstructed image. Using the mask, your goal is to try to find the tumor in the reconstructed image. " \
         "If you think you have found it, click on the reveal tab to see the original image.")
 
+        # get tumor data
         tumor_files = sorted(os.listdir("./data/Tumors/"))
         tumor_choices = ['Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 36', 'Tumor 65', 'Tumor 7', 'Tumor 73',  'Tumor 75', 'Tumor 81', 'Tumor 89', 'Tumor 97']
         tumor_ffts = create_mri_ffts()
     
-    
+        # tumor and mask selection
         tumor = st.selectbox("Select a MRI image:",
                               tumor_choices, index=None)
         number = st.number_input("Input a mask size:", value=50, step=1)
     
     
-        if tumor != None:
+        if tumor != None: # only display tumor fft, reconstruction, and image if a image was selected
             idx = tumor_choices.index(tumor)
             fft, r_image = create_mri_reconstruction(tumor_ffts[idx], number)
 
@@ -214,7 +222,7 @@ def main():
             col1.plotly_chart(fft)
             col2.plotly_chart(r_image)
     
-            with st.expander("Click to reveal the original image:"):
+            with st.expander("Click to reveal the original image:"): # display original image
                 st.image("./data/Tumors/"+tumor_files[idx])
         st.markdown("(Data courtesy of [Kaggle](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/data))")
 
