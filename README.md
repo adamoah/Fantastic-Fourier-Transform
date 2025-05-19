@@ -8,6 +8,11 @@ https://github.com/thatSaneKid/fourier/blob/master/Fourier%20Transform%20-%20A%2
 Piano audio clips from: 
 https://github.com/fuhton/piano-mp3
 
+Kspace Data from:
+https://fastmri.med.nyu.edu/
+
+MRI Images from:
+https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/data
 
 This is a collaborative final project by Andrews Damoah and Richard Sembria for CMSC471 at the
 University of Maryland.
@@ -33,3 +38,14 @@ users can play to try to reconstruct the chord with the provided notes (in C maj
 and more organized access to different sections of the project.
 
 Website can be found here: https://fantastic-fourier-transform-vpkqfpqxqcappzbfqj9uznb.streamlit.app/
+
+To run it locally make sure you have python and/or a IDE of your choice.
+First download the required packages in your terminal
+```
+pip install -r ./requriements.txt
+```
+You can then launch a local streamlit app by running the terminal command
+```
+python -m streamlit run ./main.py
+```
+

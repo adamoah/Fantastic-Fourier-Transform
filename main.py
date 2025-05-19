@@ -77,7 +77,7 @@ def main():
         "techniques such as noise reduction, compression, feature detection, and more.")
 
         st.plotly_chart(create_fantastic4_fft())
-        st.markdown("(Courtesy of [IMDB](https://www.imdb.com/title/tt1502712/))")
+        st.markdown("(Image courtesy of [IMDB](https://www.imdb.com/title/tt1502712/))")
         
         st.subheader("How to compute a 2D FFT")
         st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
@@ -159,7 +159,8 @@ def main():
             st.audio(np.fft.ifft(curr_mag), sample_rate=22050)
             # creating modifiable graph for "recreating the chord" activity
             st.plotly_chart(audio_graph(curr_freq, curr_bins, curr_mag))
-
+        st.markdown("Audio courtesy of [Piano-MP3](https://github.com/fuhton/piano-mp3)")
+        
         st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
                " we know what frequency we are looking for.")
 
@@ -182,7 +183,7 @@ def main():
 
         html = get_kspace_html()
         st.components.v1.html(html, height=550)
-        st.markdown("(Data from [FastMRI](https://fastmri.med.nyu.edu/))")
+        st.markdown("(Data courtesy of [FastMRI](https://fastmri.med.nyu.edu/))")
 
         
         st.text("Another interesting application of the FFT is filtering. By removing or masking certain regions of the " \
@@ -215,7 +216,7 @@ def main():
     
             with st.expander("Click to reveal the original image:"):
                 st.image("./data/Tumors/"+tumor_files[idx])
-        st.markdown("(Data from [Kaggle](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/data))")
+        st.markdown("(Data courtesy of [Kaggle](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/data))")
 
 if __name__ == "__main__":
     main()
