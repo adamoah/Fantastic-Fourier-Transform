@@ -148,10 +148,19 @@ def main():
 
         curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         length = len(curr_graph[0])
+
+        C4 = st.toggle("shart1")
+        D4 = st.toggle("shart2")
+        E4 = st.toggle("shart3")
+        F4 = st.toggle("shart4")
+        G4 = st.toggle("shart5")
+        A4 = st.toggle("shart6")
+        B4 = st.toggle("shart7")
+        C5 = st.toggle("shart8")
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         
-        if C4.st.toggle("shart1"):
+        if C4:
             if flags[0] == 0:
                 flags[0] = 1;
                 for i in range(length):
@@ -161,7 +170,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[0][2][i]
                     
-        if D4.bst.toggle("shart2"):
+        if D4:
             if flags[1] == 0:
                 flags[1] = 1;
                 for i in range(length):
@@ -171,7 +180,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[1][2][i]
                     
-        if E4.st.toggle("shart3"):
+        if E4:
             if flags[2] == 0:
                 flags[2] = 1;
                 for i in range(length):
@@ -181,7 +190,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[2][2][i]
                     
-        if F4.st.toggle("shart4"):
+        if F4:
             if flags[3] == 0:
                 flags[3] = 1;
                 for i in range(length):
@@ -191,7 +200,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[3][2][i]
                     
-        if G4.st.toggle("shart5"):
+        if G4:
             if flags[4] == 0:
                 flags[4] = 1;
                 for i in range(length):
@@ -201,7 +210,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[4][2][i]
                     
-        if A4.st.toggle("shart6"):
+        if A4:
             if flags[5] == 0:
                 flags[5] = 1;
                 for i in range(length):
@@ -211,7 +220,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[5][2][i]
                     
-        if B4.st.toggle("shart7"):
+        if B4:
             if flags[6] == 0:
                 flags[6] = 1;
                 for i in range(length):
@@ -221,7 +230,7 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[6][2][i]
                     
-        if C5.st.toggle("shart8"):
+        if C5:
             if flags[7] == 0:
                 flags[7] = 1;
                 for i in range(length):
