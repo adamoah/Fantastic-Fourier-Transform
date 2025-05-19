@@ -204,7 +204,7 @@ def main():
 
         # get tumor data
         tumor_files = sorted(os.listdir("./data/Tumors/"))
-        tumor_choices = ['Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 36', 'Tumor 65', 'Tumor 7', 'Tumor 73',  'Tumor 75', 'Tumor 81', 'Tumor 89', 'Tumor 97']
+        tumor_choices = ['Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 65', 'Tumor 7', 'Tumor 73',  'Tumor 75', 'Tumor 81', 'Tumor 89', 'Tumor 97']
         tumor_ffts = create_mri_ffts()
     
         # tumor and mask selection
