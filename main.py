@@ -159,7 +159,7 @@ def main():
             if flags[1] == 0:
                 flags[1] = 1;
                 for i in range(length):
-                    curr_graph[0][i] += graph_data[1][0][i]
+                    curr_graph[0][i] = 0
             else:
                 flags[1] = 0;
         if E4.button("E4", use_container_width=True):
