@@ -150,7 +150,7 @@ def main():
         length = len(curr_graph[0])
 
 
-        on1 = st.toggle("Activate feature")
+        on1 = st.toggle("shart")
         
         if on1:
             for i in range(length):
@@ -159,7 +159,7 @@ def main():
             for i in range(length):
                 curr_graph[2][i] -= graph_data[0][2][i]
 
-        on2 = st.toggle("Activate feature")
+        on2 = st.toggle("fart")
         
         if on2:
             for i in range(length):
