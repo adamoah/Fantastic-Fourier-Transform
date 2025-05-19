@@ -59,7 +59,7 @@ def main():
         )
         
         st.plotly_chart(create_winding(x, cos_wave))
-
+        st.markdown("(Inspired by [3Blue1Brown](https://www.youtube.com/watch?v=spUNpyF58BY))")
         st.html(
         """
         <p>As our winding frequency varies, so does our center of mass! Can you notice something in particular? The x-position of our 
@@ -76,15 +76,9 @@ def main():
         "understanding how frequency components relate to spatial components play a key role in image processing "\
         "techniques such as noise reduction, compression, feature detection, and more.")
 
-        st.text("Use the slider to reveal the image!")
-        image_comparison(img1="./data/fantasticfft.png", 
-                        img2="./data/fantastic4.jpeg",
-                        label1="Image in Frequency Domain",
-                        label2="Image in Spatial Domain",
-                        width=800, 
-                        starting_position=99, make_responsive=True)
-
-    
+        st.plotly_chart(create_fantastic4_fft())
+        st.markdown("(Courtesy of [IMDB](https://www.imdb.com/title/tt1502712/))")
+        
         st.subheader("How to compute a 2D FFT")
         st.markdown('''Algorithmically, the 2D FFT is very much an extention of the 1D case and involves 4 key steps:''')
         st.markdown('''
@@ -188,6 +182,8 @@ def main():
 
         html = get_kspace_html()
         st.components.v1.html(html, height=550)
+        st.markdown("(Data from [FastMRI](https://fastmri.med.nyu.edu/))")
+
         
         st.text("Another interesting application of the FFT is filtering. By removing or masking certain regions of the " \
         "frequency image, we can preserve certain aspects of the spatial image. More specifically, by masking the low " \
@@ -199,7 +195,7 @@ def main():
         "If you think you have found it, click on the reveal tab to see the original image.")
 
         tumor_files = sorted(os.listdir("./data/Tumors/"))
-        tumor_choices = ['Tumor 100', 'Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 36', 'Tumor 65', 'Tumor 7', 'Tumor 75', 'Tumor 89', 'Tumor 97']
+        tumor_choices = ['Tumor 120', 'Tumor 22', 'Tumor 243', 'Tumor 36', 'Tumor 65', 'Tumor 7', 'Tumor 73',  'Tumor 75', 'Tumor 81', 'Tumor 89', 'Tumor 97']
         tumor_ffts = create_mri_ffts()
     
     
@@ -219,6 +215,7 @@ def main():
     
             with st.expander("Click to reveal the original image:"):
                 st.image("./data/Tumors/"+tumor_files[idx])
+        st.markdown("(Data from [Kaggle](https://www.kaggle.com/datasets/navoneel/brain-mri-images-for-brain-tumor-detection/data))")
 
 if __name__ == "__main__":
     main()

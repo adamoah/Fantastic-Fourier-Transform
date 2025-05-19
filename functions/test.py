@@ -240,19 +240,23 @@ def create_amplitude_seq(freq=1, angle=45, H=100, W=100, mag=None):
 
 
 @st.cache_data
-def create_lena_fft():
+def create_fantastic4_fft():
     '''
-    Creates a plotly figure containing the image and corresponding fft for Lena
+    Creates a plotly figure containing the image and corresponding fft for the fantastic4
     '''
-    img = cv2.imread("./data/lena.jpg", 0) # read in image as a grayscale
-    fft_img = np.log(np.abs(np.fft.fftshift(np.fft.fft2(img)))) # compute 2d fft
+    # read in images + convert to rgb
+    seq = np.empty(shape=(2, 2048, 1382, 3))
+    seq[0, :, :, :] = cv2.cvtColor(cv2.imread("./data/fantastic4.jpg"), cv2.COLOR_BGR2RGB)
+    seq[1, :, :, :] = cv2.cvtColor(cv2.imread("./data/fantasticfft.jpg"), cv2.COLOR_BGR2RGB)
 
-    seq = np.array([img / 255, fft_img / np.max(fft_img)]) # concatenate images
-
+    #convert to RGB
+    
     # create fig and add titles
-    fig = px.imshow(seq, color_continuous_scale='gray', facet_col=0, facet_col_spacing=0.02, height=500)
+    fig = px.imshow(seq,  facet_col=0, facet_col_spacing=0.02, height=800)
     fig.layout.annotations[0]['text'] = "Image in Spatial Domain"
     fig.layout.annotations[1]['text'] = "Image in Frequency Domain"
+    fig.layout.annotations[0]['font'] = {'size': 20}
+    fig.layout.annotations[1]['font'] = {'size': 20}
 
     # remove axes
     fig.update_layout(coloraxis_showscale=False)
