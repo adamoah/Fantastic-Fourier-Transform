@@ -152,7 +152,7 @@ def main():
 
         on1 = st.toggle("Activate feature")
         
-        if on:
+        if on1:
             for i in range(length):
                 curr_graph[2][i] += graph_data[0][2][i]
         else:
