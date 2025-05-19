@@ -135,7 +135,7 @@ def main():
                  "B4.wav",
                  "C5.wav"]
         
-        flags = [1, 0, 0, 0, 0, 0, 0, 0]
+        
         notes = []
         graph_data = [];
         
@@ -145,10 +145,12 @@ def main():
 
         for note in notes:
             graph_data.append(audio_fft(note[0], note[1], 0.025))
+
             
         length = len(graph_data[0][0])
         
         curr_graph = graph_data[0][0], graph_data[0][1], [0] * length
+
 
         col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
 
@@ -168,62 +170,80 @@ def main():
             B4 = st.toggle("shart7")
         with col8:
             C5 = st.toggle("shart8")
+
+        flags = [False, False, False, False, False, False, False, False]
         
         if C4:
+            flag[0] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[0][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[0][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[0][2][i]
                     
         if D4:
+            flag[1] = True
             for i in range(length):
                     curr_graph[2][i] += graph_data[1][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[1][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[1][2][i]
                     
         if E4:
+            flag[2] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[2][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[2][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[2][2][i]
                     
         if F4:
+            flag[3] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[3][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[3][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[3][2][i]
                     
         if G4:
+            flag[4] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[4][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[4][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[4][2][i]
                     
         if A4:
+            flag[5] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[5][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[5][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[5][2][i]
                     
         if B4:
+            flag[6] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[6][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[6][2][i]
-                    
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[6][2][i]
+                        
         if C5:
+            flag[7] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[7][2][i]
         else:
-            for i in range(length):
-                curr_graph[2][i] -= graph_data[7][2][i]
+            if flag:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[7][2][i]
 
         with st.container():
         
