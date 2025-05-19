@@ -156,7 +156,7 @@ def main():
                 flags[0] = 1;
                 for i in range(length):
                     curr_graph[2][i] += graph_data[0][2][i]
-            else:
+            elif flags[0] == 1:
                 flags[0] = 0;
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[0][2][i]
@@ -232,11 +232,10 @@ def main():
                     curr_graph[2][i] -= graph_data[7][2][i]
 
         with st.container():
-            st.write("This is inside the container")
         
             # You can call any Streamlit command, including custom components:
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
-            fig = px.line(df, x="x", y="y", title='LFUCK')
+            fig = px.line(df, x="x", y="y")
             st.plotly_chart(fig)
 
     
