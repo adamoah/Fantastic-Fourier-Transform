@@ -168,9 +168,9 @@ def main():
                 for i in range(length):
                     curr_graph[2][i] += graph_data[0][2][i]
             else:
-            if flags[0]:
-                for i in range(length):
-                    curr_graph[2][i] -= graph_data[0][2][i]
+                if flags[0]:
+                    for i in range(length):
+                        curr_graph[2][i] -= graph_data[0][2][i]
             
         with col2:
             D4 = st.toggle("D4")
