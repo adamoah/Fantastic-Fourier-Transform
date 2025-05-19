@@ -167,7 +167,7 @@ def main():
             st.plotly_chart(audio_graph(curr_freq, curr_bins, curr_mag))
 
         st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
-               " know the frequency we are looking for.")
+               " we know what frequency we are looking for.")
 
     
     
