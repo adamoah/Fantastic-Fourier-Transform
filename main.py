@@ -150,11 +150,17 @@ def main():
         length = len(curr_graph[0])
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
+        
         if C4.button("C4", use_container_width=True):
             if flags[0] == 0:
                 flags[0] = 1;
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[0][2][i]
             else:
                 flags[0] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[0][2][i]
+                    
         if D4.button("D4", use_container_width=True):
             if flags[1] == 0:
                 flags[1] = 1;
@@ -162,42 +168,68 @@ def main():
                     curr_graph[2][i] += graph_data[1][2][i]
             else:
                 flags[1] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[1][2][i]
+                    
         if E4.button("E4", use_container_width=True):
-            if flags[2] == 0:
+           if flags[2] == 0:
                 flags[2] = 1;
-                E4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[2][2][i]
             else:
                 flags[2] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[2][2][i]
+                    
         if F4.button("F4", use_container_width=True):
-            if flags[3] == 0:
+          if flags[3] == 0:
                 flags[3] = 1;
-                F4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[3][2][i]
             else:
                 flags[3] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[3][2][i]
+                    
         if G4.button("G4", use_container_width=True):
             if flags[4] == 0:
                 flags[4] = 1;
-                G4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[4][2][i]
             else:
                 flags[4] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[4][2][i]
+                    
         if A4.button("A4", use_container_width=True):
             if flags[5] == 0:
                 flags[5] = 1;
-                A4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[5][2][i]
             else:
                 flags[5] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[5][2][i]
+                    
         if B4.button("B4", use_container_width=True):
-            if flags[6] == 0:
+           if flags[6] == 0:
                 flags[6] = 1;
-                B4.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[6][2][i]
             else:
                 flags[6] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[6][2][i]
+                    
         if C5.button("C5", use_container_width=True):
-            if flags[7] == 0:
+          if flags[7] == 0:
                 flags[7] = 1;
-                C5.markdown("poopoo")
+                for i in range(length):
+                    curr_graph[2][i] += graph_data[7][2][i]
             else:
                 flags[7] = 0;
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[7][2][i]
 
         with st.container():
             st.write("This is inside the container")
