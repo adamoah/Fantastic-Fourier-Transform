@@ -25,9 +25,10 @@ def main():
         <h2>And Its Applications</h2>
 
         <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst 
-        studying heat transfer. This tool turns functions of time into functions of frequency. But exactly what does this mean? 
-        Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform.
-        Instead, we will be using you eyes, hands, and ears!</p>"""
+        studying heat transfer. This tool turns functions of time into functions of frequency. But exactly what does this mean and why
+        is this useful? Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier 
+        transform. Instead, we will be using your eyes, hands, and ears to show you the intuition and applications of the Fourier 
+        transform!</p>"""
     )
         
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
@@ -264,6 +265,9 @@ def main():
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y")
             st.plotly_chart(fig)
+
+    st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
+           " know the frequency we are looking for.")
 
     
     
