@@ -174,74 +174,74 @@ def main():
         flags = [False, False, False, False, False, False, False, False]
         
         if C4:
-            flag[0] = True
+            flags[0] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[0][2][i]
         else:
-            if flag:
+            if flags[0]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[0][2][i]
                     
         if D4:
-            flag[1] = True
+            flags[1] = True
             for i in range(length):
                     curr_graph[2][i] += graph_data[1][2][i]
         else:
-            if flag:
+            if flags[1]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[1][2][i]
                     
         if E4:
-            flag[2] = True
+            flags[2] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[2][2][i]
         else:
-            if flag:
+            if flags[2]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[2][2][i]
                     
         if F4:
-            flag[3] = True
+            flags[3] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[3][2][i]
         else:
-            if flag:
+            if flags[3]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[3][2][i]
                     
         if G4:
-            flag[4] = True
+            flags[4] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[4][2][i]
         else:
-            if flag:
+            if flags[4]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[4][2][i]
                     
         if A4:
-            flag[5] = True
+            flags[5] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[5][2][i]
         else:
-            if flag:
+            if flags[5]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[5][2][i]
                     
         if B4:
-            flag[6] = True
+            flags[6] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[6][2][i]
         else:
-            if flag:
+            if flags[6]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[6][2][i]
                         
         if C5:
-            flag[7] = True
+            flags[7] = True
             for i in range(length):
                 curr_graph[2][i] += graph_data[7][2][i]
         else:
-            if flag:
+            if flags[7]:
                 for i in range(length):
                     curr_graph[2][i] -= graph_data[7][2][i]
 
