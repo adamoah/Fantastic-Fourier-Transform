@@ -149,16 +149,24 @@ def main():
         curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         length = len(curr_graph[0])
 
-        C4 = st.toggle("shart1")
-        D4 = st.toggle("shart2")
-        E4 = st.toggle("shart3")
-        F4 = st.toggle("shart4")
-        G4 = st.toggle("shart5")
-        A4 = st.toggle("shart6")
-        B4 = st.toggle("shart7")
-        C5 = st.toggle("shart8")
-        
-        C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
+        col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+
+        with col1:
+            C4 = st.toggle("shart1")
+        with col2:
+            D4 = st.toggle("shart2")
+        with col3:
+            E4 = st.toggle("shart3")
+        with col4:
+            F4 = st.toggle("shart4")
+        with col5:
+             G4 = st.toggle("shart5")
+        with col6:
+            A4 = st.toggle("shart6")
+        with col7:
+            B4 = st.toggle("shart7")
+        with col8:
+            C5 = st.toggle("shart8")
         
         if C4:
             if flags[0] == 0:
