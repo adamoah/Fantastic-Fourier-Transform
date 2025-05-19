@@ -121,14 +121,14 @@ def main():
         st.text("Fourier transform can also be used for audio! Let us listen to the audio clip below.")
         
         # load in audio chord data
-        
-        st.audio("./data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
+        piano, sr = audio_to_data("c-major-chord.wav")
+        st.audio(piano, sample_rate=sr, format="audio/mpeg", loop=False)
 
         st.text("Seems that this is some sort of chord. For the knowledgable, you may already know what this is." \
                " How about we try to figure this out quantitatively? Below, you can find the discrete fast Fourier" \
                " transform of the audio clip. Can you notice something?")
         
-        st.plotly_chart(get_chord_fft("c-major-chord.wav")) # chord fft
+        st.plotly_chart(get_chord_fft(piano, sr)) # chord fft
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the individual frequencies of the notes in the C major scale?" \
                "Trying recreating the graph above using the toggle buttons. Each one correspond to a particular note in the C major scale. You can play the reconstructed audio " \

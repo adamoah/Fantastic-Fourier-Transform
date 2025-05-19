@@ -506,12 +506,11 @@ def get_all_key_fft(audio):
     return frequency, num_bins, graph_data
 
 @st.cache_data
-def get_chord_fft(audio):
+def get_chord_fft(piano, sr):
     '''
     similar to the keys but caches the data so we don't
     have to keep recomputing
     '''
-    piano, sr = audio_to_data(audio)
 
     chord_mag = np.abs(audio_fft(piano))
     chord_freq, chord_bins = audio_freq(sr, chord_mag, 0.025)
