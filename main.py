@@ -126,11 +126,11 @@ def main():
                " How about we try to figure this out quantitatively? Below, you can find the discrete fast Fourier" \
                " transform of the audio clip. Can you notice something?")
 
-        piano, sr = audio_to_data("c-major-chord.wav")
-        st.plotly_chart(audio_graph(piano, sr, 'svg', 0.025))
+        st.plotly_chart(get_chord_fft("c-major-chord.wav"))
         
         st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the individual frequencies of the notes in the C major scale?" \
-               "Trying recreating the graph above using the toggle buttons. Each one correspond to a particular note in the C major scale.")
+               "Trying recreating the graph above using the toggle buttons. Each one correspond to a particular note in the C major scale. You can play the reconstructed audio " \
+               "using the play button below")
 
         # for iterating over all audio files
         audio = ["C4.wav",
@@ -142,129 +142,26 @@ def main():
                  "B4.wav",
                  "C5.wav"]
 
-        # initialize for storage later
-        notes = []
-        graph_data = [];
+        graph_data = get_all_key_fft(audio)
 
-        # convert all wav files into data for fft
-        for clip in audio:
-            notes.append(audio_to_data(clip))
-
-        # perform fft on all audio files
-        for note in notes:
-            graph_data.append(audio_fft(note[0], note[1], 0.025))
-
-        length = len(graph_data[0][0])
-        curr_graph = graph_data[0][0], graph_data[0][1], [0] * length
+        length = len(graph_data[0])
+        curr_freq, curr_bins, curr_mag = graph_data[0], graph_data[1], np.zeros(shape=(length,))
         flags = [False, False, False, False, False, False, False, False]
 
-        col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+        # 8 side-by-side containers to store the toggle buttons for each note
+        note_cols = st.columns(8)
 
-        # for every toggle button, we add the corresponding note to the graph if it is on, and subtract if it is off
-        # weird hack used: have a flag for each toggle to check whether a button has been toggled AT LEAST ONCE
-        # that way, the graph (initialized as all zeros) is not modified before a button has been pressed.
-        with col1:
-            C4 = st.toggle("C4")
-            
-            if C4:
-                flags[0] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[0][2][i]
-            else:
-                if flags[0]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[0][2][i]
-            
-        with col2:
-            D4 = st.toggle("D4")
-
-            if D4:
-                flags[1] = True
-                for i in range(length):
-                        curr_graph[2][i] += graph_data[1][2][i]
-            else:
-                if flags[1]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[1][2][i]
-            
-        with col3:
-            E4 = st.toggle("E4")
-            
-            if E4:
-                flags[2] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[2][2][i]
-            else:
-                if flags[2]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[2][2][i]
-            
-        with col4:
-            F4 = st.toggle("F4")
-
-            if F4:
-                flags[3] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[3][2][i]
-            else:
-                if flags[3]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[3][2][i]
-            
-        with col5:
-            G4 = st.toggle("G4")
-
-            if G4:
-                flags[4] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[4][2][i]
-            else:
-                if flags[4]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[4][2][i]
-            
-        with col6:
-            A4 = st.toggle("A4")
-
-            if A4:
-                flags[5] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[5][2][i]
-            else:
-                if flags[5]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[5][2][i]
-            
-        with col7:
-            B4 = st.toggle("B4")
-
-            if B4:
-                flags[6] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[6][2][i]
-            else:
-                if flags[6]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[6][2][i]
-            
-        with col8:
-            C5 = st.toggle("C5")
-
-            if C5:
-                flags[7] = True
-                for i in range(length):
-                    curr_graph[2][i] += graph_data[7][2][i]
-            else:
-                if flags[7]:
-                    for i in range(length):
-                        curr_graph[2][i] -= graph_data[7][2][i]
-
+        # for every toggle button, we add the corresponding note to the graph if it is on
+        for i in range(8):
+            with note_cols[i]:
+                flags[i] = st.toggle(audio[i][:2])
+                if flags[i]:
+                    curr_mag += graph_data[2][i]
         
         with st.container():
+            st.audio(np.fft.ifft(curr_mag), sample_rate=22050)
             # creating modifiable graph for "recreating the chord" activity
-            df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
-            fig = px.line(df, x="x", y="y")
-            st.plotly_chart(fig)
+            st.plotly_chart(audio_graph(curr_freq, curr_bins, curr_mag))
 
         st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
                " know the frequency we are looking for.")

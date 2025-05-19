@@ -436,32 +436,79 @@ def get_kspace_html(): # load kspace visual
     
     return html
 
-def audio_to_data(wav_name):
+def audio_to_data(wav_name): # load audio data
     piano, sr = librosa.load(os.path.join(os.getcwd(), "data/pianoWav/", wav_name))
     
     return piano, sr
 
-def audio_fft(signal, sr, f_ratio=1):
-    ft = np.fft.fft(signal)
-    magnitude_spectrum = np.abs(ft)
+def audio_freq(sr, magnitude_spectrum, f_ratio=1):
+    '''
+    computes the frequency information (cached because its the same for each key)
+    '''
 
     frequency = np.linspace(0, sr, len(magnitude_spectrum))
     num_frequency_bins = int(len(frequency) * f_ratio)
 
-    return frequency, num_frequency_bins, magnitude_spectrum
+    return frequency, num_frequency_bins
 
-def audio_graph(signal, sr, render_mode, f_ratio=1):
+def audio_fft(signal):
+    '''
+    computes the 1d fft magnitudes of an audio signal
+    '''
+
     ft = np.fft.fft(signal)
     magnitude_spectrum = np.abs(ft)
 
-    frequency = np.linspace(0, sr, len(magnitude_spectrum))
-    num_frequency_bins = int(len(frequency) * f_ratio)
+    return magnitude_spectrum
+
+
+def audio_graph(frequency, num_frequency_bins, magnitude_spectrum):
+    '''
+    creates a plotly graph using the given frequency informaton
+    '''
+
     df = pd.DataFrame({'x': frequency[:num_frequency_bins], 'y': magnitude_spectrum[:num_frequency_bins]})
+    fig = px.line(df, x = 'x', y = 'y', title="Magnitude vs. Frequency of C-Major Notes")
 
-    fig = px.line(df, x = 'x', y = 'y', render_mode=render_mode)
+    fig.update_xaxes(title_text='Frequency')
+    fig.update_yaxes(title_text='Magnitude')
 
     return fig
 
-    
-    
-    
+@st.cache_data
+def get_all_key_fft(audio):
+    '''
+    computes and returns the ffts for all basic audio keys
+    '''
+    # initialize for storage later
+    freqency, num_bins = None, None
+    graph_data = []
+
+    # convert all wav files into data for fft
+    for i, clip in enumerate(audio):
+        signal, sr = audio_to_data(clip)
+        graph_data.append(audio_fft(signal))
+
+        if i == 0:
+            frequency, num_bins = audio_freq(sr, graph_data[i], 0.025)
+
+    return frequency, num_bins, graph_data
+
+@st.cache_data
+def get_chord_fft(audio):
+    '''
+    similar to the keys but caches the data so we don't
+    have to keep recomputing
+    '''
+
+    piano, sr = audio_to_data(audio)
+    chord_mag = audio_fft(piano)
+    chord_freq, chord_bins = audio_freq(sr, chord_mag, 0.025)
+
+    df = pd.DataFrame({'x': chord_freq[:chord_bins], 'y': chord_mag[:chord_bins]})
+    fig = px.line(df, x = 'x', y = 'y', title="Magnitude vs. Frequency of a C-Major Chord")
+
+    fig.update_xaxes(title_text='Frequency')
+    fig.update_yaxes(title_text='Magnitude')
+
+    return fig
