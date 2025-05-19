@@ -209,7 +209,7 @@ def main():
                         curr_graph[2][i] -= graph_data[3][2][i]
             
         with col5:
-             G4 = st.toggle("G4")
+            G4 = st.toggle("G4")
 
             if G4:
                 flags[4] = True
