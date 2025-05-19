@@ -148,7 +148,7 @@ def main():
 
         # create a "blank" fft
         length = len(graph_data[0])
-        curr_freq, curr_bins, curr_mag = graph_data[0], graph_data[1], np.zeros(shape=(length,))
+        curr_freq, curr_bins, curr_mag = graph_data[0], graph_data[1], np.zeros(shape=(length,), dtype=complex)
         flags = [False, False, False, False, False, False, False, False]
 
         # 8 side-by-side containers to store the toggle buttons for each note
@@ -164,7 +164,7 @@ def main():
         with st.container(): # display and play audio and fft
             st.audio(np.fft.ifft(curr_mag), sample_rate=22050,  format="audio/mpeg", loop=False)
             # creating modifiable graph for "recreating the chord" activity
-            st.plotly_chart(audio_graph(curr_freq, curr_bins, curr_mag))
+            st.plotly_chart(audio_graph(curr_freq, curr_bins, np.abs(curr_mag)))
         st.markdown("Audio courtesy of [Piano-MP3](https://github.com/fuhton/piano-mp3)")
         
         st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \

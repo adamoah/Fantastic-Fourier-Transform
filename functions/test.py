@@ -470,11 +470,7 @@ def audio_fft(signal):
     '''
     computes the 1d fft magnitudes of an audio signal
     '''
-
-    ft = np.fft.fft(signal)
-    magnitude_spectrum = np.abs(ft)
-
-    return magnitude_spectrum
+    return np.fft.fft(signal)
 
 
 def audio_graph(frequency, num_frequency_bins, magnitude_spectrum):
@@ -496,7 +492,7 @@ def get_all_key_fft(audio):
     computes and returns the ffts for all basic audio keys
     '''
     # initialize for storage later
-    freqency, num_bins = None, None
+    frequency, num_bins = None, None
     graph_data = []
 
     # convert all wav files into data for fft
@@ -517,7 +513,7 @@ def get_chord_fft(audio):
     '''
     piano, sr = audio_to_data(audio)
 
-    chord_mag = audio_fft(piano)
+    chord_mag = np.abs(audio_fft(piano))
     chord_freq, chord_bins = audio_freq(sr, chord_mag, 0.025)
 
     df = pd.DataFrame({'x': chord_freq[:chord_bins], 'y': chord_mag[:chord_bins]})
