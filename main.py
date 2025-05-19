@@ -116,7 +116,6 @@ def main():
                 "of the FFT by the same factor. This is paticularly relevant to the DC component of the FFT (located in the center), which " \
                 "represents the \"average brightness\" of the image.")
     
-
     with tab4:
         st.text("Sounds can also be turned into data as well. T")
         
@@ -139,96 +138,124 @@ def main():
                  "B4.wav",
                  "C5.wav"]
         
-        flags = [1, 0, 0, 0, 0, 0, 0, 0]
+        
         notes = []
         graph_data = [];
+        
         
         for clip in audio:
             notes.append(audio_to_data(clip))
 
         for note in notes:
-            graph_data.append(audio_fft(note[0], note[1], 1))
+            graph_data.append(audio_fft(note[0], note[1], 0.025))
 
-        curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
+            
+        length = len(graph_data[0][0])
         
-        C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
-        if C4.button("C4", use_container_width=True):
-            if flags[0] == 0:
-                flags[0] = 1;
-                c
-            else:
-                flags[0] = 0;
-        if D4.button("D4", use_container_width=True):
-            if flags[1] == 0:
-                flags[1] = 1;
-                D4.markdown("poopoo")
-            else:
-                flags[1] = 0;
-        if E4.button("E4", use_container_width=True):
-            if flags[2] == 0:
-                flags[2] = 1;
-                E4.markdown("poopoo")
-            else:
-                flags[2] = 0;
-        if F4.button("F4", use_container_width=True):
-            if flags[3] == 0:
-                flags[3] = 1;
-                F4.markdown("poopoo")
-            else:
-                flags[3] = 0;
-        if G4.button("G4", use_container_width=True):
-            if flags[4] == 0:
-                flags[4] = 1;
-                G4.markdown("poopoo")
-            else:
-                flags[4] = 0;
-        if A4.button("A4", use_container_width=True):
-            if flags[5] == 0:
-                flags[5] = 1;
-                A4.markdown("poopoo")
-            else:
-                flags[5] = 0;
-        if B4.button("B4", use_container_width=True):
-            if flags[6] == 0:
-                flags[6] = 1;
-                B4.markdown("poopoo")
-            else:
-                flags[6] = 0;
-        if C5.button("C5", use_container_width=True):
-            if flags[7] == 0:
-                flags[7] = 1;
-                C5.markdown("poopoo")
-            else:
-                flags[7] = 0;
+        curr_graph = graph_data[0][0], graph_data[0][1], [0] * length
+
+
+        col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
+
+        with col1:
+            C4 = st.toggle("shart1")
+        with col2:
+            D4 = st.toggle("shart2")
+        with col3:
+            E4 = st.toggle("shart3")
+        with col4:
+            F4 = st.toggle("shart4")
+        with col5:
+             G4 = st.toggle("shart5")
+        with col6:
+            A4 = st.toggle("shart6")
+        with col7:
+            B4 = st.toggle("shart7")
+        with col8:
+            C5 = st.toggle("shart8")
+
+        flags = [False, False, False, False, False, False, False, False]
+        
+        if C4:
+            flags[0] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[0][2][i]
+        else:
+            if flags[0]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[0][2][i]
+                    
+        if D4:
+            flags[1] = True
+            for i in range(length):
+                    curr_graph[2][i] += graph_data[1][2][i]
+        else:
+            if flags[1]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[1][2][i]
+                    
+        if E4:
+            flags[2] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[2][2][i]
+        else:
+            if flags[2]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[2][2][i]
+                    
+        if F4:
+            flags[3] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[3][2][i]
+        else:
+            if flags[3]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[3][2][i]
+                    
+        if G4:
+            flags[4] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[4][2][i]
+        else:
+            if flags[4]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[4][2][i]
+                    
+        if A4:
+            flags[5] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[5][2][i]
+        else:
+            if flags[5]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[5][2][i]
+                    
+        if B4:
+            flags[6] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[6][2][i]
+        else:
+            if flags[6]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[6][2][i]
+                        
+        if C5:
+            flags[7] = True
+            for i in range(length):
+                curr_graph[2][i] += graph_data[7][2][i]
+        else:
+            if flags[7]:
+                for i in range(length):
+                    curr_graph[2][i] -= graph_data[7][2][i]
 
         with st.container():
-            st.write("This is inside the container")
         
             # You can call any Streamlit command, including custom components:
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
-            fig = px.line(df, x="x", y="y", title='LFUCK')
-            fig.show()
+            fig = px.line(df, x="x", y="y")
+            st.plotly_chart(fig)
 
-
-        
-        stab1, stab2, stab3, stab4, stab5, stab6, stab7, stab8 = st.tabs(["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"])
-        with stab1:
-            st.audio("data/pianoWav/C4.wav", format="audio/mpeg", loop=False)
-        with stab2:
-            st.audio("data/pianoWav/D4.wav", format="audio/mpeg", loop=False)
-        with stab3:
-            st.audio("data/pianoWav/E4.wav", format="audio/mpeg", loop=False)
-        with stab4:
-            st.audio("data/pianoWav/F4.wav", format="audio/mpeg", loop=False)
-        with stab5:
-            st.audio("data/pianoWav/G4.wav", format="audio/mpeg", loop=False)
-        with stab6:
-            st.audio("data/pianoWav/A4.wav", format="audio/mpeg", loop=False)
-        with stab7:
-            st.audio("data/pianoWav/B4.wav", format="audio/mpeg", loop=False)
-        with stab8:
-            st.audio("data/pianoWav/C5.wav", format="audio/mpeg", loop=False)
-
+    
     with tab5:
         st.subheader("2D Application: MRI")
 
