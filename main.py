@@ -266,8 +266,8 @@ def main():
             fig = px.line(df, x="x", y="y")
             st.plotly_chart(fig)
 
-    st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
-           " know the frequency we are looking for.")
+        st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
+               " know the frequency we are looking for.")
 
     
     
