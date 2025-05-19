@@ -148,6 +148,16 @@ def main():
 
         curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         length = len(curr_graph[0])
+
+
+        on = st.toggle("Activate feature")
+        
+        if on:
+            for i in range(length):
+                curr_graph[2][i] += graph_data[0][2][i]
+        else:
+            for i in range(length):
+                curr_graph[2][i] -= graph_data[0][2][i]
         
         C4, D4, E4, F4, G4, A4, B4, C5 = st.columns(8)
         
