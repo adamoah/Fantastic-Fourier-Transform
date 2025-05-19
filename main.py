@@ -38,7 +38,7 @@ def main():
         <p>To explain the Fourier transform visually, let us begin with a very simple case. Let us take the cosine wave seen below. A slider
         is included to modify the frequency of our function. Assuming some math background, you can see that the wavelength is shortened 
         over our time interval. If you do not have a math background, just think of our function as a line going up and down more times 
-        during an amount of time. This will be our function of time.</p>.
+        during an amount of time. This will be our function of time.</p>
         """
         )
         value = st.slider("Frequency", 0.0, 3.0, value=1.0, step=0.1)
