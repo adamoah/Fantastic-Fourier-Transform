@@ -25,9 +25,10 @@ def main():
         <h2>And Its Applications</h2>
 
         <p>The Fourier transform is a wonderful mathematical tool developed by Jean-Baptiste Joseph Fourier in the early 1800s whilst 
-        studying heat transfer. This tool turns functions of time into functions of frequency. But exactly what does this mean? 
-        Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier transform.
-        Instead, we will be using you eyes, hands, and ears!</p>"""
+        studying heat transfer. This tool turns functions of time into functions of frequency. But exactly what does this mean and why
+        is this useful? Fortunately, we will not be diving into a detailed mathematical explanation for your understanding of the Fourier 
+        transform. Instead, we will be using your eyes, hands, and ears to show you the intuition and applications of the Fourier 
+        transform!</p>"""
     )
         
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Visualizing 1D FFT", "2D FFT", "Sinusoidal Grating", "Audio Example", "MRI Example"])
@@ -38,7 +39,7 @@ def main():
         <p>To explain the Fourier transform visually, let us begin with a very simple case. Let us take the cosine wave seen below. A slider
         is included to modify the frequency of our function. Assuming some math background, you can see that the wavelength is shortened 
         over our time interval. If you do not have a math background, just think of our function as a line going up and down more times 
-        during an amount of time. This will be our function of time.</p>.
+        during an amount of time. This will be our function of time.</p>
         """
         )
         value = st.slider("Frequency", 0.0, 3.0, value=1.0, step=0.1)
@@ -117,17 +118,19 @@ def main():
                 "represents the \"average brightness\" of the image.")
     
     with tab4:
-        st.text("Sounds can also be turned into data as well. T")
+        st.text("Fourier transform can also be used for audio! Let us listen to the audio clip below.")
         
         st.audio("data/pianoWav/c-major-chord.wav", format="audio/mpeg", loop=False)
-        
-        st.text("Below, you can find the discrete fast Fourier transform of the audio clip. Can you notice something?")
+
+        st.text("Seems that this is some sort of chord. For the knowledgable, you may already know what this is." \
+               " How about we try to figure this out quantitatively? Below, you can find the discrete fast Fourier" \
+               " transform of the audio clip. Can you notice something?")
 
         piano, sr = audio_to_data("c-major-chord.wav")
         st.plotly_chart(audio_graph(piano, sr, 'svg', 0.025))
         
-        st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the frequencies of the notes in the C major scale?" \
-               " We've included an audio clip in case you wanted to figure this out using your ears.")
+        st.text("There seems to be peaks at certain frequencies of the audio clip. How about we take a look at the individual frequencies of the notes in the C major scale?" \
+               "Trying recreating the graph above using the toggle buttons. Each one correspond to a particular note in the C major scale.")
 
         # for iterating over all audio files
         audio = ["C4.wav",
@@ -258,11 +261,13 @@ def main():
 
         
         with st.container():
-        
-            # You can call any Streamlit command, including custom components:
+            # creating modifiable graph for "recreating the chord" activity
             df = pd.DataFrame({'x': curr_graph[0][:curr_graph[1]], 'y': curr_graph[2][:curr_graph[1]]})
             fig = px.line(df, x="x", y="y")
             st.plotly_chart(fig)
+
+        st.text("Hopefully, you can now see that the Fourier transform can help decompose waves into individual components, given that" \
+               " know the frequency we are looking for.")
 
     
     
