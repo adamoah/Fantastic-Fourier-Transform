@@ -144,7 +144,7 @@ def main():
             notes.append(audio_to_data(clip))
 
         for note in notes:
-            graph_data.append(audio_fft(note[0], note[1], 1))
+            graph_data.append(audio_fft(note[0], note[1], 0.025))
 
         curr_graph = graph_data[0][0], graph_data[0][1], graph_data[0][2]
         length = len(curr_graph[0])
