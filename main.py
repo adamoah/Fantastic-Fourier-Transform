@@ -76,10 +76,10 @@ def main():
 
         st.text("Use the slider to reveal the image!")
         image_comparison(img1="./data/fantasticfft.png", 
-                         img2="./data/fantastic4.jpeg",
-                         label1="Image in Frequency Domain",
-                         label2="Image in Spatial Domain", 
-                         starting_position=99, make_responsive=False)
+                        img2="./data/fantastic4.jpeg",
+                        label1="Image in Frequency Domain",
+                        label2="Image in Spatial Domain", 
+                        starting_position=99, make_responsive=True)
 
     
         st.subheader("How to compute a 2D FFT")
